@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
+import java.nio.ByteBuffer;
 
 import javax.swing.JPanel;
 
@@ -38,7 +39,9 @@ public class Render extends JPanel implements KeyListener {
 		} else {
 			//HERE GOES NOTHING
 			//*No, really, it's about drawing the void of space
-			
+			//g2d.transform(AffineTransform.getTranslateInstance(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].x - ClientData.world.players[ClientData.controlledPlayer].x,
+				//	-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].y + ClientData.world.players[ClientData.controlledPlayer].y));
+			//g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot)));
 			g2d.setBackground(new Color(0,0,0));
 			//HERE GOES THE UNIVERSE
 			//*Everything rotationally dynamic goes here
@@ -64,11 +67,12 @@ public class Render extends JPanel implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+		//Tell the server!
+		ClientThread.sendKey(e.getKeyCode(), true);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+		ClientThread.sendKey(e.getKeyCode(), false);
 	}
 }

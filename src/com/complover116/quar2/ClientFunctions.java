@@ -13,11 +13,11 @@ public class ClientFunctions {
 		ClientData.world.ships[in[1]].updatePos(ByteBuffer.wrap(in, 2, 62));
 	}
 	public static void receivePlayerData(byte[] in) {
-		if (ClientData.world.ships[in[1]] == null) {
+		if (ClientData.world.players[in[1]] == null) {
 			System.out.println("CLIENT: CREATING PLAYER, ID:"+in[1]);
-			ClientData.world.ships[in[1]] = new Ship(0,0,0);
+			ClientData.world.players[in[1]] = new Player();
 		}
-		ClientData.world.ships[in[1]].updatePos(ByteBuffer.wrap(in, 2, 62));
+		ClientData.world.players[in[1]].upDatePos(ByteBuffer.wrap(in, 2, 62));
 	}
 
 }

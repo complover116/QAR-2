@@ -18,7 +18,6 @@ public class Ship {
 		this.x = x;
 		this.y = y;
 		this.rot = rot;
-		hull[0][0] = new Hull(3);
 		hull[1][0] = new Hull(3);
 		hull[2][0] = new Hull(3);
 		hull[3][0] = new Hull(3);
@@ -27,7 +26,6 @@ public class Ship {
 		hull[6][0] = new Hull(3);
 		hull[7][0] = new Hull(3);
 		hull[8][0] = new Hull(3);
-		hull[9][0] = new Hull(3);
 		
 		hull[0][9] = new Hull(3);
 		hull[1][9] = new Hull(3);
@@ -49,7 +47,6 @@ public class Ship {
 		hull[0][7] = new Hull(3);
 		hull[0][8] = new Hull(3);
 		hull[0][9] = new Hull(3);
-		hull[0][0] = new Hull(3);
 		
 		hull[9][1] = new Hull(3);
 		hull[9][2] = new Hull(3);
@@ -60,7 +57,6 @@ public class Ship {
 		hull[9][7] = new Hull(3);
 		hull[9][8] = new Hull(3);
 		hull[9][9] = new Hull(3);
-		hull[9][0] = new Hull(3);
 		calcMass();
 	}
 	public void tick() {

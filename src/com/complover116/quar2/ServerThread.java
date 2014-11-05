@@ -6,6 +6,8 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class ServerThread implements Runnable {
 	public static ArrayList<RemoteClient> clients = new ArrayList<RemoteClient>();
 	public static DatagramSocket socket;
@@ -14,8 +16,9 @@ public class ServerThread implements Runnable {
 		try {
 			socket = new DatagramSocket(1141);
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SoundHandler.playSound("/sound/effects/error1.wav");
+			JOptionPane.showMessageDialog(null, "Server socket could not bind!\nMake sure that port 1141 is free!", "Connection error", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
 		}
 	}
 
@@ -35,12 +38,19 @@ public class ServerThread implements Runnable {
 				socket.receive(incoming);
 				if (in[0] == 124) {
 					clients.add(new RemoteClient(incoming.getAddress(),
-							incoming.getPort()));
+							incoming.getPort(), ServerData.world.players[0]));
+					
 					byte out[] = new byte[64];
 					out[0] = 124;
 					out[1] = 1;
 					DatagramPacket response = new DatagramPacket(out, out.length, incoming.getSocketAddress());
 					socket.send(response);
+				}
+				if(in[0] == 1) {
+					if(in[1] == 1)
+					ServerData.world.players[in[2]].keyPress(in);
+					else
+						ServerData.world.players[in[2]].keyRelease(in);
 				}
 				System.out.println(in[0]);
 			} catch (IOException e1) {

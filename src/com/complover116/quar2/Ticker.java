@@ -14,6 +14,14 @@ public class Ticker {
 				ServerFunctions.sendShipPos(ServerData.world.ships[i], i);
 			}
 		}
+		//SENDING PLAYER INFO
+		for(int i = 0; i < Config.maxShips; i ++) {
+			//IF IT EXISTS
+			if(ServerData.world.players[i] != null) {
+				//SEND IT
+				ServerFunctions.sendPlayerPos(ServerData.world.players[i], i);
+			}
+		}
 		ticktime = 0;
 		}
 		ticktime ++;

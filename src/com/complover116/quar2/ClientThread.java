@@ -13,10 +13,11 @@ public class ClientThread implements Runnable {
 	static DatagramSocket socket;
 	public ClientThread() {
 		try {
-			socket = new DatagramSocket();
+			socket = new DatagramSocket(1142);
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SoundHandler.playSound("/sound/effects/error1.wav");
+			JOptionPane.showMessageDialog(null, "Client socket could not bind!\nMake sure that port 1142 is free!", "Connection error", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
 		}
 	}
 	@Override
@@ -57,6 +58,9 @@ public class ClientThread implements Runnable {
 				case 1:
 					ClientFunctions.receiveShipData(in);
 				break;
+				case 2:
+					ClientFunctions.receivePlayerData(in);
+				break;
 				}
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
@@ -72,12 +76,14 @@ public class ClientThread implements Runnable {
 	}
 	public static void sendKey(int key, boolean state) {
 		byte out[] = new byte[64];
+		out[0] = 1;
 		if(state) {
-			out[0] = 100;
+			out[1] = 1;
 		} else {
-			out[0] = 101;
+			out[1] = 0;
 		}
-		ByteBuffer.wrap(out, 1, 63).putInt(key);
+		out[2] = 0;
+		ByteBuffer.wrap(out, 3, 61).putInt(key);
 			DatagramPacket outgoing = new DatagramPacket(out, out.length,
 					Config.server, 1141);
 			try {

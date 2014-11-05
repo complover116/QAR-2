@@ -42,7 +42,12 @@ public class Loader {
 			ServerData.world.ships[0] = new Ship(100,100,0);
 			ServerData.world.ships[5] = new Ship(400,400,30);
 			ServerData.world.ships[5].velX = 0;
-			ServerData.world.ships[5].velRot = 2;
+			ServerData.world.ships[5].velRot = 0.5;
+			ServerData.world.players[0] = new Player();
+			ServerData.world.players[0].x = 256;
+			ServerData.world.players[0].y = 128;
+			ServerData.world.players[0].shipid = 5;
+			ServerData.world.players[0].x = 128;
 			SoundHandler.playSound("/sound/effects/blip1.wav");
 			new Thread(new TickerThread()).start();
 			Config.address = "localhost";
