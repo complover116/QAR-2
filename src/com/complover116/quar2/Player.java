@@ -11,7 +11,7 @@ public class Player {
 	public int shipid;
 	public double velY = 0;
 	public byte movX = 0;
-	private byte speedX = 4;
+	private byte speedX = 8;
 	private int jumpsLeft = 1;
 
 	public void tick() {

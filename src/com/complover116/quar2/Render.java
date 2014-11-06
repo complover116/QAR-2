@@ -39,9 +39,13 @@ public class Render extends JPanel implements KeyListener {
 		} else {
 			//HERE GOES NOTHING
 			//*No, really, it's about drawing the void of space
-			//g2d.transform(AffineTransform.getTranslateInstance(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].x - ClientData.world.players[ClientData.controlledPlayer].x,
-				//	-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].y + ClientData.world.players[ClientData.controlledPlayer].y));
-			//g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot)));
+			Ship shish = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid];
+			double transformed[] = shish.transform(ClientData.world.players[ClientData.controlledPlayer].x, ClientData.world.players[ClientData.controlledPlayer].y);
+			g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
+			g2d.transform(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 400, -transformed[1]));
+			
+			
+					
 			g2d.setBackground(new Color(0,0,0));
 			//HERE GOES THE UNIVERSE
 			//*Everything rotationally dynamic goes here

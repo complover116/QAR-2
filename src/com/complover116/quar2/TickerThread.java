@@ -5,7 +5,7 @@ public class TickerThread implements Runnable {
 	@Override
 	public void run() {
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
