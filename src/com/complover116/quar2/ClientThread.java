@@ -13,7 +13,7 @@ public class ClientThread implements Runnable {
 	static DatagramSocket socket;
 	public ClientThread() {
 		try {
-			socket = new DatagramSocket(1142);
+			socket = new DatagramSocket();
 		} catch (SocketException e) {
 			SoundHandler.playSound("/sound/effects/error1.wav");
 			JOptionPane.showMessageDialog(null, "Client socket could not bind!\nMake sure that port 1142 is free!", "Connection error", JOptionPane.ERROR_MESSAGE);

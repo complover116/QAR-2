@@ -30,6 +30,7 @@ public class Loader {
 			Render.loadStep = "Hosting a game...";
 			new Thread(new ServerThread()).start();
 			isServer = true;
+			ServerData.world.isRemote = false;
 			while(!initialized) {
 				try {
 					Thread.sleep(10);

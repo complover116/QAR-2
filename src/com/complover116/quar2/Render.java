@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
-import java.nio.ByteBuffer;
 
 import javax.swing.JPanel;
 
@@ -45,7 +44,7 @@ public class Render extends JPanel implements KeyListener {
 			g2d.transform(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 400, -transformed[1]));
 			
 			
-					
+			
 			g2d.setBackground(new Color(0,0,0));
 			//HERE GOES THE UNIVERSE
 			//*Everything rotationally dynamic goes here

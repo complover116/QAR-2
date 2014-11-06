@@ -13,7 +13,7 @@ public class Player {
 	public byte movX = 0;
 	private byte speedX = 8;
 	private int jumpsLeft = 1;
-
+	
 	public void tick() {
 		boolean flag;
 		boolean flag2 = true;

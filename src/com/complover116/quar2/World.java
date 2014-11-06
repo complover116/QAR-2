@@ -1,6 +1,7 @@
 package com.complover116.quar2;
 
 public class World {
+	public boolean isRemote = true;
 	public Ship[] ships = new Ship[Config.maxShips];
 	public Player[] players = new Player[Config.maxShips];
 	public void tick() {
