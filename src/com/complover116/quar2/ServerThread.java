@@ -52,7 +52,6 @@ public class ServerThread implements Runnable {
 					else
 						ServerData.world.players[in[2]].keyRelease(in);
 				}
-				System.out.println(in[0]);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

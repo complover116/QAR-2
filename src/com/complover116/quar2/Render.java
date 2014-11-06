@@ -36,25 +36,31 @@ public class Render extends JPanel implements KeyListener {
 			g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30));
 			g2d.drawString(loadStep, 280, 500);
 		} else {
-			//HERE GOES NOTHING
-			//*No, really, it's about drawing the void of space
+			
+			
+
+			//CAMERA POSITIONING
 			Ship shish = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid];
 			double transformed[] = shish.transform(ClientData.world.players[ClientData.controlledPlayer].x, ClientData.world.players[ClientData.controlledPlayer].y);
 			g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
 			g2d.transform(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 400, -transformed[1]));
+
 			
-			
-			
+			//HERE GOES NOTHING
+			//*No, really, it's about drawing the void of space
+			//**And stars
 			g2d.setBackground(new Color(0,0,0));
+			for(int i = 0; i < ClientData.background.size(); i ++) {
+				ClientData.background.get(i).draw(g2d);
+			}
+			
 			//HERE GOES THE UNIVERSE
-			//*Everything rotationally dynamic goes here
 			for(int i = 0; i < Config.maxShips; i ++) {
 				if(ClientData.world.ships[i] != null) {
 					ClientData.world.ships[i].draw(g2d);
 				}
 			}
-			//HERE GOES THE SHIP
-			//*Everything that is rotationally static goes here
+			
 			for(int i = 0; i < Config.maxShips; i ++) {
 				if(ClientData.world.players[i] != null) {
 					ClientData.world.players[i].draw(g2d);

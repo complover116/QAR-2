@@ -36,6 +36,7 @@ public class ClientThread implements Runnable {
 			byte in[] = new byte[64];
 			DatagramPacket incoming = new DatagramPacket(in, in.length);
 			socket.setSoTimeout(2000);
+			Render.loadStep = "Waiting for response from server...";
 			socket.receive(incoming);
 			Loader.initialized = true;
 			socket.setSoTimeout(0);

@@ -13,8 +13,19 @@ public class Player {
 	public byte movX = 0;
 	private byte speedX = 8;
 	private int jumpsLeft = 1;
-	
+	public int animation = 0;
+	public int anim = 1;
+	public int time = 0;
+	public Usable using = null;
 	public void tick() {
+		time ++;
+		if(this.time > 10){
+		if(anim == 1){
+			this.animation ++;
+			if(this.animation > 4) this.animation = 1;
+		}
+		time = 0;
+		}
 		boolean flag;
 		boolean flag2 = true;
 		// COLLISIONS
@@ -65,14 +76,31 @@ public class Player {
 	}
 
 	public void draw(Graphics2D g2d) {
-
+		String img = "";
+		switch(animation) {
+		case 1:
+			img = "/img/player/typing/1.png";
+		break;
+		case 2:
+			img = "/img/player/typing/2.png";
+		break;
+		case 3:
+			img = "/img/player/typing/3.png";
+		break;
+		case 4:
+			img = "/img/player/typing/4.png";
+		break;
+		default:
+			img = "/img/player/idle.png";
+		break;
+		}
 		double transformed[] = ClientData.world.ships[shipid].transform(x, y);
 		AffineTransform trans = AffineTransform.getTranslateInstance(
 				transformed[0] + ClientData.world.ships[shipid].x,
 				transformed[1] + ClientData.world.ships[shipid].y);
 		trans.concatenate(AffineTransform.getRotateInstance(Math
 				.toRadians(ClientData.world.ships[shipid].rot)));
-		g2d.drawImage(ResourceContainer.images.get("/img/player/idle.png"),
+		g2d.drawImage(ResourceContainer.images.get(img),
 				trans, null);
 	}
 
@@ -82,6 +110,7 @@ public class Player {
 		data.put(movX);
 		data.putDouble(velY);
 		data.putInt(shipid);
+		data.putInt(animation);
 	}
 
 	public void upDatePos(ByteBuffer data) {
@@ -90,6 +119,7 @@ public class Player {
 		movX = data.get();
 		velY = data.getDouble();
 		shipid = data.getInt();
+		animation = data.getInt();
 	}
 
 	public void keyPress(byte[] in) {
@@ -103,6 +133,9 @@ public class Player {
 		if (key == CharData.W&&this.jumpsLeft > 0){
 			this.jumpsLeft --;
 			this.velY = 20;
+		}
+		if(key == CharData.S) {
+			
 		}
 	}
 

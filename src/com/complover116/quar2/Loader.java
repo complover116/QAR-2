@@ -55,6 +55,7 @@ public class Loader {
 		} else {
 			Config.address = in;
 		}
+		
 			Render.loadStep = "Connecting to "+Config.address+"...";
 			
 			try{
@@ -67,6 +68,11 @@ public class Loader {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+			}
+			for(int i = -9; i < 9; i ++) {
+				for(int j = -9; j < 9; j ++) {
+					ClientData.background.add(new BGObject(i*200, j*200));
 				}
 			}
 			SoundHandler.playSound("/sound/effects/blip1_space.wav");

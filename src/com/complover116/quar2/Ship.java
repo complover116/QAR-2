@@ -3,6 +3,7 @@ package com.complover116.quar2;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class Ship {
 	public Hull[][] hull = new Hull[500][500];
@@ -14,6 +15,7 @@ public class Ship {
 	public double velRot = 0;
 	public double massX = 0;
 	public double massY = 0;
+	public ArrayList<ShipJect> objects = new ArrayList<ShipJect>();
 	public Ship(double x, double y, double rot) {
 		this.x = x;
 		this.y = y;
@@ -58,6 +60,7 @@ public class Ship {
 		hull[9][8] = new Hull(3);
 		hull[9][9] = new Hull(3);
 		calcMass();
+		objects.add(new ShipJect(this, 128,64,0));
 	}
 	public void tick() {
 		this.x += velX;
@@ -121,5 +124,8 @@ public class Ship {
 					g2d.drawImage(ResourceContainer.images.get(hull[i][j].getImagePath()), trans,null);
 				}
 			}
+		for(int i = 0; i < objects.size(); i ++) {
+			objects.get(i).draw(g2d);
+		}
 	}
 }
