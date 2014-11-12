@@ -4,18 +4,17 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 public class ShipJect {
-	public double x;
-	public double y;
+	public Pos pos = new Pos();
 	public double rot;
 	public Ship ship;
 	public ShipJect(Ship sh, double x, double y, double rot){
 		this.ship = sh;
-		this.x = x;
-		this.y = y;
+		this.pos.x = x;
+		this.pos.y = y;
 		this.rot = rot;
 	}
 	public double[] absPos() {
-		double[] res = ship.transform(x, y);
+		double[] res = ship.transform(pos.x, pos.y);
 		return new double[]{ship.x+res[0],ship.y+res[1],ship.rot};
 	}
 	public void draw(Graphics2D g2d) {

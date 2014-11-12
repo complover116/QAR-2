@@ -6,17 +6,36 @@ import java.awt.geom.AffineTransform;
 import java.nio.ByteBuffer;
 
 public class Player {
-	public double x;
-	public double y;
+	public Pos pos = new Pos();
 	public int shipid;
 	public double velY = 0;
 	public byte movX = 0;
 	private byte speedX = 8;
-	private int jumpsLeft = 1;
+	private int jumpsLeft = 100;
 	public int animation = 0;
-	public int anim = 1;
+	public int anim = 0;
 	public int time = 0;
 	public Usable using = null;
+	public Usable getUsable() {
+		System.out.println("Loooking for usables...");
+		for(int i = 0; i < ServerData.world.ships[shipid].objects.size(); i ++){
+			if(ServerData.world.ships[shipid].objects.get(i) instanceof Usable) {
+				System.out.println("Found a usable!");
+				if(ServerData.world.ships[shipid].objects.get(i).pos.distance(this.pos) < 32) return (Usable) ServerData.world.ships[shipid].objects.get(i);
+			}
+		}
+		return null;
+	}
+	public void use(Usable toUse) {
+		System.out.println("Using");
+		toUse.onUse(this);
+		this.using = toUse;
+	}
+	public void unUse() {
+		System.out.println("UnUsing");
+		this.using.onExit(this);
+		this.using = null;
+	}
 	public void tick() {
 		time ++;
 		if(this.time > 10){
@@ -29,33 +48,33 @@ public class Player {
 		boolean flag;
 		boolean flag2 = true;
 		// COLLISIONS
-		double newY = y + this.velY;
-		double newX = x + movX * speedX;
+		double newY = pos.y + this.velY;
+		double newX = pos.x + movX * speedX;
 		this.velY -= 1;
 		flag = true;
 		for (int i = 0; i < 500; i++)
 			for (int j = 0; j < 500; j++) {
 				if(ServerData.world.ships[shipid].hull[i][j] != null){
-				Rectangle r = new Rectangle(j * 32, i * 32 + 32, 32, 32);
-				if (new Rectangle((int) newX, (int) y, 32, 64).intersects(r)) {
+				Rectangle r = new Rectangle(i * 32, j * 32 + 32, 32, 32);
+				if (new Rectangle((int) newX, (int) pos.y, 32, 64).intersects(r)) {
 					flag = false;
 					if (movX == -1) {
-						this.x = r.getX() + r.getWidth();
+						pos.x = r.getX() + r.getWidth();
 					} else {
-						this.x = r.getX() - 32;
+						pos.x = r.getX() - 32;
 					}
 					break;
 				}
 				
 				
-				if(new Rectangle((int) x, (int)newY, 32,64).intersects(r)){
+				if(new Rectangle((int) pos.x, (int)newY, 32,64).intersects(r)){
 					flag2 = false;
 					
 					if(this.velY > 0){
 					
-					this.y = r.getY() - 64;
+					pos.y = r.getY() - 64;
 					} else {
-						this.y = r.getY() + r.getHeight();
+						pos.y = r.getY() + r.getHeight();
 						this.jumpsLeft = 1;
 					}
 					this.velY = 0;
@@ -65,13 +84,13 @@ public class Player {
 				}
 			}
 		if (flag) {
-			x = newX;
+			pos.x = newX;
 		} else {
 
 			movX = 0;
 		}
 		if(flag2){
-			y = newY;
+			pos.y = newY;
 			}
 	}
 
@@ -94,7 +113,7 @@ public class Player {
 			img = "/img/player/idle.png";
 		break;
 		}
-		double transformed[] = ClientData.world.ships[shipid].transform(x, y);
+		double transformed[] = ClientData.world.ships[shipid].transform(pos.x, pos.y);
 		AffineTransform trans = AffineTransform.getTranslateInstance(
 				transformed[0] + ClientData.world.ships[shipid].x,
 				transformed[1] + ClientData.world.ships[shipid].y);
@@ -105,8 +124,8 @@ public class Player {
 	}
 
 	public void downDatePos(ByteBuffer data) {
-		data.putDouble(x);
-		data.putDouble(y);
+		data.putDouble(pos.x);
+		data.putDouble(pos.y);
 		data.put(movX);
 		data.putDouble(velY);
 		data.putInt(shipid);
@@ -114,8 +133,8 @@ public class Player {
 	}
 
 	public void upDatePos(ByteBuffer data) {
-		x = data.getDouble();
-		y = data.getDouble();
+		pos.x = data.getDouble();
+		pos.y = data.getDouble();
 		movX = data.get();
 		velY = data.getDouble();
 		shipid = data.getInt();
@@ -125,6 +144,22 @@ public class Player {
 	public void keyPress(byte[] in) {
 		// First of all, let's get that integer we want
 		int key = ByteBuffer.wrap(in, 3, 61).getInt();
+		//Handle usables first - we don't want to be stuck in a panel, do we?
+		if(key == CharData.Space) {
+			if(this.using == null){
+			Usable sos = this.getUsable();
+			if(sos != null) {
+				this.use(sos);
+			}
+			} else {
+				this.unUse();
+			}
+		}
+		//Then, if we are usiong something, let's channel our keys to the Usable
+		if(this.using != null) {
+			this.using.keyPress(key);
+			return;
+		}
 		// Now, check whether this is a move key
 		if (key == CharData.A)
 			this.movX = -1;
@@ -134,14 +169,17 @@ public class Player {
 			this.jumpsLeft --;
 			this.velY = 20;
 		}
-		if(key == CharData.S) {
-			
-		}
+		
 	}
 
 	public void keyRelease(byte[] in) {
 		// First of all, let's get that integer we want
 		int key = ByteBuffer.wrap(in, 3, 61).getInt();
+		//Then, if we are usiong something, let's channel our keys to the Usable
+		if(this.using != null) {
+			this.using.keyRelease(key);
+			return;
+		}
 		// Now, check whether this is a move key
 		if (key == CharData.A && this.movX == -1)
 			this.movX = 0;

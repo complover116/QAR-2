@@ -29,7 +29,7 @@ public class Ship {
 		hull[7][0] = new Hull(3);
 		hull[8][0] = new Hull(3);
 		
-		hull[0][9] = new Hull(3);
+		/*hull[0][9] = new Hull(3);
 		hull[1][9] = new Hull(3);
 		hull[2][9] = new Hull(3);
 		hull[3][9] = new Hull(3);
@@ -58,9 +58,9 @@ public class Ship {
 		hull[9][6] = new Hull(3);
 		hull[9][7] = new Hull(3);
 		hull[9][8] = new Hull(3);
-		hull[9][9] = new Hull(3);
+		hull[9][9] = new Hull(3);*/
 		calcMass();
-		objects.add(new ShipJect(this, 128,64,0));
+		objects.add(new EnginesPanel(this, 128,64,0));
 	}
 	public void tick() {
 		this.x += velX;

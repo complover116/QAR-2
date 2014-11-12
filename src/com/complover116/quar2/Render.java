@@ -38,13 +38,15 @@ public class Render extends JPanel implements KeyListener {
 		} else {
 			
 			
-
+			try{
 			//CAMERA POSITIONING
 			Ship shish = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid];
-			double transformed[] = shish.transform(ClientData.world.players[ClientData.controlledPlayer].x, ClientData.world.players[ClientData.controlledPlayer].y);
+			double transformed[] = shish.transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
 			g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
 			g2d.transform(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 400, -transformed[1]));
-
+			} catch (NullPointerException e) {
+				System.out.println("Camera positioning failed, possibly no data from server yet");
+			}
 			
 			//HERE GOES NOTHING
 			//*No, really, it's about drawing the void of space
@@ -76,7 +78,7 @@ public class Render extends JPanel implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//Tell the server!
+		System.out.println(e.getKeyCode());
 		ClientThread.sendKey(e.getKeyCode(), true);
 	}
 

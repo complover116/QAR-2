@@ -16,7 +16,6 @@ public class Loader {
 		Render.loadStep = "Loading resources...";
 		new Thread(new ClientTickerThread()).start();
 		ResourceContainer.load();
-		//THIS IS TEMPORARY, WILL REPLACE WITH GUI STUFF
 		while(!initialized) {
 			try {
 				Thread.sleep(10);
@@ -45,10 +44,10 @@ public class Loader {
 			ServerData.world.ships[5].velX = 0;
 			ServerData.world.ships[5].velRot = 0.5;
 			ServerData.world.players[0] = new Player();
-			ServerData.world.players[0].x = 256;
-			ServerData.world.players[0].y = 128;
+			ServerData.world.players[0].pos.x = 256;
+			ServerData.world.players[0].pos.y = 128;
 			ServerData.world.players[0].shipid = 5;
-			ServerData.world.players[0].x = 128;
+			ServerData.world.players[0].pos.x = 128;
 			SoundHandler.playSound("/sound/effects/blip1.wav");
 			new Thread(new TickerThread()).start();
 			Config.address = "localhost";

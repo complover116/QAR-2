@@ -17,5 +17,6 @@ public static final int Ast = 106;
 public static final int Num8 = 104;
 public static final int Num9 = 105;
 public static final int NumPlus = 107;
+public static final int Space = 32;
 
 }
