@@ -38,6 +38,14 @@ public class Render extends JPanel implements KeyListener {
 		} else {
 			
 			Ship shish = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid];
+			//HUD RENDERING
+			
+			
+			//USABLE HUD
+			if(ServerData.world.players[ClientData.controlledPlayer].using != null){
+				ServerData.world.players[ClientData.controlledPlayer].using.drawHUD(g2d);
+			}
+			
 			try{
 			//CAMERA POSITIONING
 			
@@ -78,6 +86,7 @@ public class Render extends JPanel implements KeyListener {
 					ClientData.world.players[i].draw(g2d);
 				}
 			}
+			
 		}
 	}
 

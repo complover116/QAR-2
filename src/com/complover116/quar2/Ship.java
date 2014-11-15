@@ -17,6 +17,7 @@ public class Ship {
 	public double massY = 0;
 	public double thrustX = 1;
 	public double thrustY = 0;
+	public double thrustRot = 0;
 	public ArrayList<ShipJect> objects = new ArrayList<ShipJect>();
 	public Ship(double x, double y, double rot) {
 		this.x = x;

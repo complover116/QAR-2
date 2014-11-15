@@ -1,5 +1,6 @@
 package com.complover116.quar2;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
@@ -39,6 +40,14 @@ public class EnginesPanel extends Panel {
 	public void tick() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void drawHUD(Graphics2D g2d) {
+		if(ship.thrustX > 0) {
+			g2d.setColor(new Color(0,0,255));
+			g2d.drawRect(400, 760, 40, (int) (400*ship.thrustX));
+		}
 	}
 
 }
