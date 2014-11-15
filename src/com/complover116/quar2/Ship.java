@@ -15,6 +15,8 @@ public class Ship {
 	public double velRot = 0;
 	public double massX = 0;
 	public double massY = 0;
+	public double thrustX = 1;
+	public double thrustY = 0;
 	public ArrayList<ShipJect> objects = new ArrayList<ShipJect>();
 	public Ship(double x, double y, double rot) {
 		this.x = x;
@@ -29,7 +31,7 @@ public class Ship {
 		hull[7][0] = new Hull(3);
 		hull[8][0] = new Hull(3);
 		
-		/*hull[0][9] = new Hull(3);
+		hull[0][9] = new Hull(3);
 		hull[1][9] = new Hull(3);
 		hull[2][9] = new Hull(3);
 		hull[3][9] = new Hull(3);
@@ -58,14 +60,16 @@ public class Ship {
 		hull[9][6] = new Hull(3);
 		hull[9][7] = new Hull(3);
 		hull[9][8] = new Hull(3);
-		hull[9][9] = new Hull(3);*/
+		hull[9][9] = new Hull(3);
 		calcMass();
 		objects.add(new EnginesPanel(this, 128,64,0));
+		objects.add(new Engine(this, -64,64,0));
 	}
 	public void tick() {
 		this.x += velX;
 		this.y += velY;
 		this.rot += velRot;
+		for(int i =0 ;i <this.objects.size(); i ++) this.objects.get(i).tick();
 	}
 	public void updatePos(ByteBuffer data) {
 		this.x = data.getDouble();
@@ -111,6 +115,18 @@ public class Ship {
 		//And convert back
 		double relx = massX + Math.cos(Math.toRadians(deg-90))*distance;
 		double rely = massX + Math.sin(Math.toRadians(deg-90))*distance;
+		return new double[]{relx,rely};
+	}
+	public double[] detransform(double x, double y) {
+		//Get current degAndD
+		double deg = Math.atan2(x, y);
+		double distance = Math.sqrt(x*x+y*y);
+		deg = Math.toDegrees(deg);
+		//Change it
+		deg += rot;
+		//And convert back
+		double relx = Math.cos(Math.toRadians(deg-90))*distance;
+		double rely = Math.sin(Math.toRadians(deg-90))*distance;
 		return new double[]{relx,rely};
 	}
 	public void draw(Graphics2D g2d) {

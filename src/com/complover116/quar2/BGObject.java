@@ -7,6 +7,7 @@ public class BGObject {
 	public int x;
 	public int y;
 	public BGObject(int x, int y) {
+		System.out.println("New BGObject created at x:"+x+" y:"+y);
 		this.x = (int) (x + Math.random() * 200 - 100);
 		this.y = (int) (y + Math.random() * 200 - 100);
 	}

@@ -37,13 +37,13 @@ public class Render extends JPanel implements KeyListener {
 			g2d.drawString(loadStep, 280, 500);
 		} else {
 			
-			
+			Ship shish = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid];
 			try{
 			//CAMERA POSITIONING
-			Ship shish = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid];
+			
 			double transformed[] = shish.transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
 			g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
-			g2d.transform(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 400, -transformed[1]));
+			g2d.transform(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 400, -transformed[1] - shish.y+ 400));
 			} catch (NullPointerException e) {
 				System.out.println("Camera positioning failed, possibly no data from server yet");
 			}
@@ -52,8 +52,18 @@ public class Render extends JPanel implements KeyListener {
 			//*No, really, it's about drawing the void of space
 			//**And stars
 			g2d.setBackground(new Color(0,0,0));
-			for(int i = 0; i < ClientData.background.size(); i ++) {
-				ClientData.background.get(i).draw(g2d);
+			for(int i = (int) (shish.x/100 - 10); i < shish.x/100 + 10; i ++) {
+				for(int j = (int) (shish.y/100 - 10); j < shish.y/100 + 10; j ++) {
+					try{
+					if(ClientData.background[i][j] != null){
+						ClientData.background[i][j].draw(g2d);
+					} else {
+						ClientData.background[i][j] = new BGObject(i*100, j*100);
+					}
+					} catch(ArrayIndexOutOfBoundsException e) {
+						
+					}
+				}
 			}
 			
 			//HERE GOES THE UNIVERSE
