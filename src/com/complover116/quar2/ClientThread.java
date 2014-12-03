@@ -10,11 +10,38 @@ import java.nio.ByteBuffer;
 import javax.swing.JOptionPane;
 
 public class ClientThread implements Runnable {
+	public class TimeoutThread implements Runnable {
+
+		@Override
+		public void run() {
+			System.out.println("Client Timeout Thread has started...");
+			while(ClientData.run) {
+				timeout ++;
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(timeout > ClientThread.timeoutHigh) {
+					SoundHandler.playSound("/sound/effects/error1.wav");
+					JOptionPane.showMessageDialog(null, "No message received for "+ClientThread.timeoutHigh/10+" seconds.\nConnection is considered terminated.", "Disconnected", JOptionPane.ERROR_MESSAGE);
+					System.exit(0);
+				}
+			}
+			System.out.println("Client Timeout Thread has stopped...");
+		}
+		
+	}
 	static DatagramSocket socket;
+	public static int timeout = 0;
+	public static final int timeoutLow = 10;
+	public static final int timeoutHigh = 50;
 	public ClientThread() {
 		try {
 			socket = new DatagramSocket();
 		} catch (SocketException e) {
+			e.printStackTrace();
 			SoundHandler.playSound("/sound/effects/error1.wav");
 			JOptionPane.showMessageDialog(null, "Client socket could not bind!\nMake sure that port 1142 is free!", "Connection error", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
@@ -22,12 +49,7 @@ public class ClientThread implements Runnable {
 	}
 	@Override
 	public void run() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+		System.out.println("Client Networking Thread has started...");
 		byte out[] = new byte[64];
 		out[0] = 124;
 		try {
@@ -49,18 +71,23 @@ public class ClientThread implements Runnable {
 			JOptionPane.showMessageDialog(null, "Unknown network error", "Network error", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
-		
-		while(true) {
+		System.out.println("Client Networking Thread has entered loopmode");
+		new Thread(new TimeoutThread()).start();
+		while(ClientData.run) {
 			byte in[] = new byte[64];
 			DatagramPacket incoming = new DatagramPacket(in, in.length);
 			try {
 				socket.receive(incoming);
+				timeout = 0;
 				switch(in[0]) {
 				case 1:
 					ClientFunctions.receiveShipData(in);
 				break;
 				case 2:
 					ClientFunctions.receivePlayerData(in);
+				break;
+				case 3:
+					
 				break;
 				}
 			} catch (IOException e1) {
@@ -74,6 +101,7 @@ public class ClientThread implements Runnable {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("Client Networking Thread has stopped");
 	}
 	public static void sendKey(int key, boolean state) {
 		byte out[] = new byte[64];

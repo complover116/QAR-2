@@ -7,14 +7,21 @@ import java.nio.ByteBuffer;
 
 public class Player {
 	public Pos pos = new Pos();
+	public Leg leftLeg;
+	public Leg rightLeg;
+	public Pos leg2pos = new Pos();
+	public Pos leg1pos = new Pos();
 	public int shipid;
 	public double velY = 0;
 	public byte movX = 0;
-	private byte speedX = 8;
+	private byte speedX = 4;
 	private int jumpsLeft = 100;
 	public int animation = 0;
 	public int anim = 0;
+	public int leganim = 20;
+	public boolean leganimstat = false;
 	public int time = 0;
+	public World world;
 	public Usable using = null;
 	public Usable getUsable() {
 		System.out.println("Loooking for usables...");
@@ -31,12 +38,32 @@ public class Player {
 		toUse.onUse(this);
 		this.using = toUse;
 	}
+	public Player(World wrld, double x, double y) {
+		world = wrld;
+		this.pos.x = x;
+		this.pos.y = y;
+		this.leftLeg = new Leg(this, false);
+		this.rightLeg = new Leg(this, true);
+	}
 	public void unUse() {
 		System.out.println("UnUsing");
 		this.using.onExit(this);
 		this.using = null;
 	}
+	void leganim(int offset) {
+		if(leganimstat){
+			leganim -=offset;
+		} else {
+			leganim +=offset;
+		}
+		if(leganim>52||leganim<15){
+			leganimstat = !leganimstat;
+			if(leganim>52)leganim = 52;
+			if(leganim<15)leganim = 15;
+		}
+	}
 	public void tick() {
+		leganim(movX*2);
 		time ++;
 		if(this.time > 10){
 		if(anim == 1){
@@ -92,40 +119,26 @@ public class Player {
 		if(flag2){
 			pos.y = newY;
 			}
+		//LIMBS TICK
+		this.leftLeg.tick();
+		this.rightLeg.tick();
 	}
 
 	public void draw(Graphics2D g2d) {
-		String img = "";
-		switch(animation) {
-		case 1:
-			img = "/img/player/typing/1.png";
-		break;
-		case 2:
-			img = "/img/player/typing/2.png";
-		break;
-		case 3:
-			img = "/img/player/typing/3.png";
-		break;
-		case 4:
-			img = "/img/player/typing/4.png";
-		break;
-		default:
-			img = "/img/player/idle.png";
-		break;
-		}
 		double transformed[] = ClientData.world.ships[shipid].transform(pos.x, pos.y);
 		AffineTransform trans = AffineTransform.getTranslateInstance(
 				transformed[0] + ClientData.world.ships[shipid].x,
 				transformed[1] + ClientData.world.ships[shipid].y);
 		trans.concatenate(AffineTransform.getRotateInstance(Math
 				.toRadians(ClientData.world.ships[shipid].rot)));
-		g2d.drawImage(ResourceContainer.images.get(img),
+		g2d.drawImage(ResourceContainer.images.get("/img/player/idle.png"),
 				trans, null);
+		leftLeg.draw(g2d);
+		rightLeg.draw(g2d);
 	}
 
 	public void downDatePos(ByteBuffer data) {
-		data.putDouble(pos.x);
-		data.putDouble(pos.y);
+		pos.put(data);
 		data.put(movX);
 		data.putDouble(velY);
 		data.putInt(shipid);
@@ -133,8 +146,7 @@ public class Player {
 	}
 
 	public void upDatePos(ByteBuffer data) {
-		pos.x = data.getDouble();
-		pos.y = data.getDouble();
+		pos.read(data);
 		movX = data.get();
 		velY = data.getDouble();
 		shipid = data.getInt();

@@ -1,5 +1,7 @@
 package com.complover116.quar2;
 
+import java.nio.ByteBuffer;
+
 
 /**
  * Class representing a 2D Vector
@@ -17,9 +19,21 @@ public class Pos {
 		x = X;
 		y = Y;
 	}
+	public void put(ByteBuffer data) {
+		data.putDouble(this.x);
+		data.putDouble(this.y);
+	}
+	public void read(ByteBuffer data) {
+		this.x = data.getDouble();
+		this.y = data.getDouble();
+	}
 	public Pos(double X, double Y, boolean f) {
 		x = X*16+8;
 		y = Y*16+8;
+	}
+	public Pos(ByteBuffer data) {
+		this.x = data.getDouble();
+		this.y = data.getDouble();
 	}
 	public double distance(Pos pos2) {
 		double deltaX = pos2.x - this.x;

@@ -38,13 +38,7 @@ public class Render extends JPanel implements KeyListener {
 		} else {
 			
 			Ship shish = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid];
-			//HUD RENDERING
 			
-			
-			//USABLE HUD
-			if(ServerData.world.players[ClientData.controlledPlayer].using != null){
-				ServerData.world.players[ClientData.controlledPlayer].using.drawHUD(g2d);
-			}
 			
 			try{
 			//CAMERA POSITIONING
@@ -86,6 +80,24 @@ public class Render extends JPanel implements KeyListener {
 					ClientData.world.players[i].draw(g2d);
 				}
 			}
+			try{
+				//CAMERA DISPOSITIONING
+				
+				double transformed[] = shish.transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
+				g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
+				g2d.transform(AffineTransform.getTranslateInstance(-(-transformed[0] - shish.x + 400), -(-transformed[1] - shish.y+ 400)));
+				} catch (NullPointerException e) {
+					System.out.println("Camera positioning failed, possibly no data from server yet");
+				}
+			//HUD RENDERING
+			if(ClientThread.timeout > ClientThread.timeoutLow) {
+				g2d.setColor(new Color(255,0,0));
+				g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+				g2d.drawString("WARNING:No message from server for "+ClientThread.timeout/10+" seconds", 100, 500);
+			}
+			
+			//USABLE HUD
+			ClientData.hud.draw(g2d);
 			
 		}
 	}
@@ -97,7 +109,7 @@ public class Render extends JPanel implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyCode());
+		//System.out.println(e.getKeyCode());
 		ClientThread.sendKey(e.getKeyCode(), true);
 	}
 

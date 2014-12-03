@@ -15,7 +15,7 @@ public class Ship {
 	public double velRot = 0;
 	public double massX = 0;
 	public double massY = 0;
-	public double thrustX = 1;
+	public double thrustX = 0;
 	public double thrustY = 0;
 	public double thrustRot = 0;
 	public ArrayList<ShipJect> objects = new ArrayList<ShipJect>();
@@ -31,6 +31,8 @@ public class Ship {
 		hull[6][0] = new Hull(3);
 		hull[7][0] = new Hull(3);
 		hull[8][0] = new Hull(3);
+		hull[9][0] = new Hull(3);
+		hull[10][0] = new Hull(3);
 		
 		hull[0][9] = new Hull(3);
 		hull[1][9] = new Hull(3);
@@ -53,7 +55,7 @@ public class Ship {
 		hull[0][8] = new Hull(3);
 		hull[0][9] = new Hull(3);
 		
-		hull[9][1] = new Hull(3);
+		/*hull[9][1] = new Hull(3);
 		hull[9][2] = new Hull(3);
 		hull[9][3] = new Hull(3);
 		hull[9][4] = new Hull(3);
@@ -61,7 +63,7 @@ public class Ship {
 		hull[9][6] = new Hull(3);
 		hull[9][7] = new Hull(3);
 		hull[9][8] = new Hull(3);
-		hull[9][9] = new Hull(3);
+		hull[9][9] = new Hull(3);*/
 		calcMass();
 		objects.add(new EnginesPanel(this, 128,64,0));
 		objects.add(new Engine(this, -64,64,0));

@@ -24,12 +24,6 @@ public class ServerThread implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
 		Loader.initialized = true;
 		while (true) {
 			byte in[] = new byte[64];

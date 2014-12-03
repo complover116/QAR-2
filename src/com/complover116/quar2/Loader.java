@@ -39,14 +39,10 @@ public class Loader {
 				}
 			}
 			initialized = false;
-			ServerData.world.ships[0] = new Ship(100,100,0);
-			ServerData.world.ships[0].thrustX = 0;
-			ServerData.world.ships[5] = new Ship(400,400,0);
+			ServerData.world.ships[5] = new Ship(100,100,0);
 			ServerData.world.ships[5].velX = 0;
 			ServerData.world.ships[5].velRot = 0;
-			ServerData.world.players[0] = new Player();
-			ServerData.world.players[0].pos.x = 256;
-			ServerData.world.players[0].pos.y = 128;
+			ServerData.world.players[0] = new Player(ServerData.world, 256,128);
 			ServerData.world.players[0].shipid = 5;
 			ServerData.world.players[0].pos.x = 128;
 			SoundHandler.playSound("/sound/effects/blip1.wav");

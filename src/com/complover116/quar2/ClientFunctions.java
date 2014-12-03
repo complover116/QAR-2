@@ -15,7 +15,8 @@ public class ClientFunctions {
 	public static void receivePlayerData(byte[] in) {
 		if (ClientData.world.players[in[1]] == null) {
 			System.out.println("CLIENT: CREATING PLAYER, ID:"+in[1]);
-			ClientData.world.players[in[1]] = new Player();
+			Pos pos = new Pos(ByteBuffer.wrap(in, 2, 62));
+			ClientData.world.players[in[1]] = new Player(ClientData.world, pos.x, pos.y);
 		}
 		ClientData.world.players[in[1]].upDatePos(ByteBuffer.wrap(in, 2, 62));
 	}
