@@ -21,5 +21,5 @@ public class ServerFunctions {
 		player.downDatePos(data);
 		ServerThread.sendBytes(out);
 	}
-
+	
 }

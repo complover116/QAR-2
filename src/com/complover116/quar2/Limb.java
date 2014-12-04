@@ -7,9 +7,9 @@ import java.awt.geom.AffineTransform;
 
 public class Limb {
 	public Player player;
-	public double startX;
-	public double startY;
+	public byte forcebend = 0;
 	public Pos end = new Pos();
+	boolean faceright = true;
 	public double x1 = 40;
 	public double y1 = 20;
 	public double x2 = 40;
@@ -31,7 +31,13 @@ public class Limb {
 		  double ty = end.y - Math.sin(angle1) * segLength;
 		  dx = tx - x2;
 		  dy = ty - y2;
-		  double angle2 = Math.atan2(dy, dx);  
+		  double angle2 = Math.atan2(dy, dx);
+		  if(angle2>angle1&&!faceright) {
+			  angle2-=Math.toRadians(10);
+		  }
+		  if(angle2<angle1&&faceright) {
+			  angle2+=Math.toRadians(10);
+		  }
 		  x1 = x2 + Math.cos(angle2) * segLength;
 		  y1 = y2 + Math.sin(angle2) * segLength;
 		  

@@ -9,8 +9,11 @@ public class Player {
 	public Pos pos = new Pos();
 	public Leg leftLeg;
 	public Leg rightLeg;
+	public Arm rightArm;
+	public Arm leftArm;
 	public Pos leg2pos = new Pos();
 	public Pos leg1pos = new Pos();
+	public double bodyYoffcet =0;
 	public int shipid;
 	public double velY = 0;
 	public byte movX = 0;
@@ -23,6 +26,7 @@ public class Player {
 	public int time = 0;
 	public World world;
 	public Usable using = null;
+	public boolean looksright = true;
 	public Usable getUsable() {
 		System.out.println("Loooking for usables...");
 		for(int i = 0; i < ServerData.world.ships[shipid].objects.size(); i ++){
@@ -44,6 +48,8 @@ public class Player {
 		this.pos.y = y;
 		this.leftLeg = new Leg(this, false);
 		this.rightLeg = new Leg(this, true);
+		this.leftArm = new Arm(this, false);
+		this.rightArm = new Arm(this, true);
 	}
 	public void unUse() {
 		System.out.println("UnUsing");
@@ -65,13 +71,6 @@ public class Player {
 	public void tick() {
 		leganim(movX*2);
 		time ++;
-		if(this.time > 10){
-		if(anim == 1){
-			this.animation ++;
-			if(this.animation > 4) this.animation = 1;
-		}
-		time = 0;
-		}
 		boolean flag;
 		boolean flag2 = true;
 		// COLLISIONS
@@ -122,6 +121,8 @@ public class Player {
 		//LIMBS TICK
 		this.leftLeg.tick();
 		this.rightLeg.tick();
+		rightArm.tick();
+		leftArm.tick();
 	}
 
 	public void draw(Graphics2D g2d) {
@@ -135,6 +136,8 @@ public class Player {
 				trans, null);
 		leftLeg.draw(g2d);
 		rightLeg.draw(g2d);
+		rightArm.draw(g2d);
+		leftArm.draw(g2d);
 	}
 
 	public void downDatePos(ByteBuffer data) {
@@ -142,7 +145,7 @@ public class Player {
 		data.put(movX);
 		data.putDouble(velY);
 		data.putInt(shipid);
-		data.putInt(animation);
+		data.putInt(anim);
 	}
 
 	public void upDatePos(ByteBuffer data) {
@@ -150,7 +153,7 @@ public class Player {
 		movX = data.get();
 		velY = data.getDouble();
 		shipid = data.getInt();
-		animation = data.getInt();
+		anim = data.getInt();
 	}
 
 	public void keyPress(byte[] in) {
@@ -173,10 +176,14 @@ public class Player {
 			return;
 		}
 		// Now, check whether this is a move key
-		if (key == CharData.A)
+		if (key == CharData.A){
 			this.movX = -1;
-		if (key == CharData.D)
+		looksright = false;
+		}
+		if (key == CharData.D){
 			this.movX = 1;
+		looksright = true;
+		}
 		if (key == CharData.W&&this.jumpsLeft > 0){
 			this.jumpsLeft --;
 			this.velY = 20;

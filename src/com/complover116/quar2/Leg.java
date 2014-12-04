@@ -23,14 +23,11 @@ public class Leg extends Limb {
 	}
 	public void tick(){
 		super.tick();
-		
-		if(right){
-			x2 = player.pos.x+24;
-			y2 = player.pos.y-40;
-		} else {
-			x2 = player.pos.x+8;
-			y2 = player.pos.y-40;
-		}
+
+		x2 = player.pos.x+16;
+		y2 = player.pos.y-40;
+		face(player.looksright);
+		if(player.anim == 0&&player.movX != 0){
 		if(player.leganimstat == this.right){
 			end.y = player.pos.y - 64;
 		} else {
@@ -38,16 +35,27 @@ public class Leg extends Limb {
 		}
 		
 		if(right) {
-		end.x = player.pos.x - 10 + player.leganim;
+		end.x = player.pos.x -26+ player.leganim;
 		} else {
-			end.x = player.pos.x - 10 + 52 - player.leganim;
+			end.x = player.pos.x +52 - player.leganim;
+		}
+		} else {
+			end.y = player.pos.y - 64;
+			if(right) {
+				end.x = player.pos.x + 24;
+				} else {
+					end.x = player.pos.x + 8;
+				}
 		}
 	}
 	public void draw(Graphics2D g2d){
 		super.draw(g2d);
-		/*g2d.setColor(new Color(255,0,0));
-		rtsandr(this.dr, g2d);
+		g2d.setColor(new Color(255,0,0));
+		rtsandr(new Rectangle((int)x1-2, (int) (y1-2), 4, 4), g2d);
 		g2d.setColor(new Color(0,255,0));
-		rtsandr(this.dr2, g2d);*/
+		rtsandr(new Rectangle((int)x2-2, (int) (y2-2), 4, 4), g2d);
+	}
+	public void face(boolean trright) {
+		faceright = trright;
 	}
 }

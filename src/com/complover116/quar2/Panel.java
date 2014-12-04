@@ -9,7 +9,7 @@ public abstract class Panel extends ShipJect implements Usable {
 
 	public void onUse(Player ply) {
 		ply.using = this;
-		ply.pos.x = this.pos.x - 32;
+		ply.pos.x = this.pos.x - 24;
 		ply.pos.y = this.pos.y;
 		ply.anim = 1;
 	}
