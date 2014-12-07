@@ -82,7 +82,7 @@ public class Render extends JPanel implements KeyListener {
 				//CAMERA DISPOSITIONING
 				transformed = shish.transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
 				g2d.transform(AffineTransform.getTranslateInstance(-(-transformed[0] - shish.x + 400), -(-transformed[1] - shish.y+ 400)));
-				g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
+				g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
 				
 				} catch (NullPointerException e) {
 					System.out.println("Camera dispositioning failed, possibly no data from server yet");

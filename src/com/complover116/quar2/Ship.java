@@ -99,6 +99,7 @@ public class Ship implements Serializable{
 		objects.add(new Engine(this, -64,64,0));
 	}
 	public void tick() {
+		velRot *= 0.99;
 		this.x += velX;
 		this.y += velY;
 		this.rot += velRot;
