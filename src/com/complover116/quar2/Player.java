@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 
 public class Player {
 	public Pos pos = new Pos();
+	public int color = 1;
 	public Leg leftLeg;
 	public Leg rightLeg;
 	public Arm rightArm;
@@ -63,6 +64,7 @@ public class Player {
 			leganim +=offset;
 		}
 		if(leganim>52||leganim<15){
+			SoundHandler.playSound("/sound/effects/step/metal"+((int)(Math.random()*2)+1)+".wav");
 			leganimstat = !leganimstat;
 			if(leganim>52)leganim = 52;
 			if(leganim<15)leganim = 15;
@@ -132,7 +134,7 @@ public class Player {
 				transformed[1] + ClientData.world.ships[shipid].y);
 		trans.concatenate(AffineTransform.getRotateInstance(Math
 				.toRadians(ClientData.world.ships[shipid].rot)));
-		g2d.drawImage(ResourceContainer.images.get("/img/player/idle.png"),
+		g2d.drawImage(ResourceContainer.images.get("/img/player/idle.png-"+ResourceLoader.colnames[color]),
 				trans, null);
 		leftLeg.draw(g2d);
 		rightLeg.draw(g2d);

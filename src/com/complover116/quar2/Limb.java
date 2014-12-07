@@ -54,7 +54,7 @@ public class Limb {
 		trans.concatenate(AffineTransform.getRotateInstance(Math
 				.toRadians(ClientData.world.ships[player.shipid].rot)));
 		trans.concatenate(AffineTransform.getRotateInstance(-angle, 0, 1.5));
-		g2d.drawImage(ResourceContainer.images.get("/img/player/limb2.png"),
+		g2d.drawImage(ResourceContainer.images.get("/img/player/limb2.png-"+ResourceLoader.colnames[player.color]),
 				trans, null);
 	}
 	void rtsandr(Rectangle r, Graphics2D g2d) {
