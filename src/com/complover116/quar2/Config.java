@@ -7,5 +7,6 @@ public class Config {
 	public static InetAddress server;
 	public static String address = "localhost";
 	public static final int maxShips = 50;
+	public static final int maxPlayers = 2;
 	public static final int tickdelay = 20;
 }

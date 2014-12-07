@@ -5,6 +5,10 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class Leg extends Limb {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2700186723792201443L;
 	boolean right = false;
 	Rectangle dr = new Rectangle(0,0,1,1);
 	Rectangle dr2 = new Rectangle(0,0,1,1);
@@ -23,7 +27,7 @@ public class Leg extends Limb {
 	}
 	public void tick(){
 		super.tick();
-
+		//if(Math.random()>0.9)System.out.println("tck");
 		x2 = player.pos.x+16;
 		y2 = player.pos.y-40;
 		face(player.looksright);

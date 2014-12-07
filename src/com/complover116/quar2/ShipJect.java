@@ -1,8 +1,13 @@
 package com.complover116.quar2;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public abstract class ShipJect {
+public abstract class ShipJect implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -739488251719246204L;
 	public Pos pos = new Pos();
 	public double rot;
 	public Ship ship;

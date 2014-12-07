@@ -42,9 +42,7 @@ public class Loader {
 			ServerData.world.ships[5] = new Ship(400,500,57);
 			ServerData.world.ships[5].velX = 0;
 			ServerData.world.ships[5].velRot = 0;
-			ServerData.world.players[0] = new Player(ServerData.world, 256,128);
-			ServerData.world.players[0].shipid = 5;
-			ServerData.world.players[0].pos.x = 128;
+			
 			SoundHandler.playSound("/sound/effects/blip1.wav");
 			new Thread(new TickerThread()).start();
 			Config.address = "localhost";
@@ -59,6 +57,7 @@ public class Loader {
 			Config.server = InetAddress.getByName(Config.address);
 			new Thread(new ClientThread()).start();
 			while(!initialized) {
+				Render.loadspeed+=0.25;
 				try {
 					Thread.sleep(10);
 				} catch (InterruptedException e) {

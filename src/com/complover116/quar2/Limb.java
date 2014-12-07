@@ -4,8 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 
-public class Limb {
+public class Limb implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7142616134134096075L;
 	public Player player;
 	public byte forcebend = 0;
 	public Pos end = new Pos();

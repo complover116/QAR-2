@@ -2,6 +2,10 @@ package com.complover116.quar2;
 
 public abstract class Panel extends ShipJect implements Usable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4215459859016303616L;
 	public Panel(Ship sh, double x, double y, double rot) {
 		super(sh, x, y, rot);
 		// TODO Auto-generated constructor stub

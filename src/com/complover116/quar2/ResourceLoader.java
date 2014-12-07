@@ -12,7 +12,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 

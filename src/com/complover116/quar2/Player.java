@@ -3,11 +3,16 @@ package com.complover116.quar2;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 
-public class Player {
+public class Player implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6679268673263726581L;
 	public Pos pos = new Pos();
-	public int color = 4;
+	public int color = 1;
 	public Leg leftLeg;
 	public Leg rightLeg;
 	public Arm rightArm;
@@ -75,10 +80,11 @@ public class Player {
 		}
 	}
 	public void tick() {
-		leganim(movX*2);
+		leganim(movX*speedX);
 		time ++;
 		boolean flag;
 		boolean flag2 = true;
+		if(!world.isRemote){
 		// COLLISIONS
 		double newY = pos.y + this.velY;
 		double newX = pos.x + movX * speedX;
@@ -125,6 +131,7 @@ public class Player {
 			this.onGround = false;
 			pos.y = newY;
 			}
+		}
 		if(world.isRemote){
 		//LIMBS TICK
 		this.leftLeg.tick();
@@ -155,6 +162,11 @@ public class Player {
 		data.putDouble(velY);
 		data.putInt(shipid);
 		data.putInt(anim);
+		if(onGround){
+		data.put((byte) 1);
+		} else {
+			data.put((byte) 0);
+		}
 	}
 
 	public void upDatePos(ByteBuffer data) {
@@ -163,6 +175,11 @@ public class Player {
 		velY = data.getDouble();
 		shipid = data.getInt();
 		anim = data.getInt();
+		if(data.get() == 0){
+			onGround = false;
+		}else {
+			onGround = true;
+		}
 	}
 
 	public void keyPress(byte[] in) {
@@ -187,11 +204,23 @@ public class Player {
 		// Now, check whether this is a move key
 		if (key == CharData.A){
 			this.movX = -1;
+			if(looksright){
 		looksright = false;
+		leftArm.offsetX = -15.5;
+		rightArm.offsetX = 15.5;
+		leftArm.offsetY = -48;
+		rightArm.offsetY = -48;
+			}
 		}
 		if (key == CharData.D){
 			this.movX = 1;
-		looksright = true;
+			if(!looksright){
+				looksright = true;
+				leftArm.offsetX = -15.5;
+				rightArm.offsetX = 15.5;
+				leftArm.offsetY = -48;
+				rightArm.offsetY = -48;
+			}
 		}
 		if (key == CharData.W&&this.jumpsLeft > 0){
 			this.jumpsLeft --;

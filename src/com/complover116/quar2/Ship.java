@@ -2,10 +2,15 @@ package com.complover116.quar2;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class Ship {
+public class Ship implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6330349971680345419L;
 	public Hull[][] hull = new Hull[500][500];
 	public double x;
 	public double y;

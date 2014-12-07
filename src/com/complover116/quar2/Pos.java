@@ -1,5 +1,6 @@
 package com.complover116.quar2;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 
@@ -8,7 +9,11 @@ import java.nio.ByteBuffer;
  * @author complover116
  *
  */
-public class Pos {
+public class Pos implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 238250628170350204L;
 	public double x;
 	public double y;
 	

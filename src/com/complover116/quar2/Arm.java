@@ -1,8 +1,13 @@
 package com.complover116.quar2;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 
-public class Arm extends Limb{
+public class Arm extends Limb implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3442492942501578160L;
 	int time = 0;
 	boolean right = false;
 	double goalx;

@@ -50,8 +50,15 @@ public class ClientThread implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Client Networking Thread has started...");
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		byte out[] = new byte[64];
 		out[0] = 124;
+		out[1] = (byte) (Math.random()*5);
 		try {
 			DatagramPacket outgoing = new DatagramPacket(out, out.length, Config.server, 1141);
 			socket.send(outgoing);
@@ -60,6 +67,11 @@ public class ClientThread implements Runnable {
 			socket.setSoTimeout(2000);
 			Render.loadStep = "Waiting for response from server...";
 			socket.receive(incoming);
+			if(in[1] == -1){
+				JOptionPane.showMessageDialog(null, "Server is full!", "Connection error", JOptionPane.ERROR_MESSAGE);
+				System.exit(0);
+			}
+			ClientData.controlledPlayer = in[2];
 			Loader.initialized = true;
 			socket.setSoTimeout(0);
 		} catch(SocketTimeoutException e) {
@@ -87,7 +99,12 @@ public class ClientThread implements Runnable {
 					ClientFunctions.receivePlayerData(in);
 				break;
 				case 3:
-					
+					ClientFunctions.receivePlayerInfo(in);
+				break;
+				case -1:
+					System.out.println("SpaapS");
+					ClientData.world.players[in[1]] = new Player(ClientData.world, 0, 0);
+					ClientData.world.players[in[1]].color = in[2];
 				break;
 				}
 			} catch (IOException e1) {
@@ -111,7 +128,7 @@ public class ClientThread implements Runnable {
 		} else {
 			out[1] = 0;
 		}
-		out[2] = 0;
+		out[2] = (byte) ClientData.controlledPlayer;
 		ByteBuffer.wrap(out, 3, 61).putInt(key);
 			DatagramPacket outgoing = new DatagramPacket(out, out.length,
 					Config.server, 1141);
