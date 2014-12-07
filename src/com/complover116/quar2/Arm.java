@@ -71,13 +71,13 @@ public class Arm extends Limb{
 		} else if (player.anim == 1){
 			this.moveSpeed = 2;
 			time ++;
-			if(time > 20&&Math.random()>0.8){
+			if(time > 40&&Math.random()>0.95){
 				time = 0;
 				double offset = Math.random()*20;
 				goaly = -50+offset;
 				goalx = 32.5+offset;
 			}
-			if(time == 10) {
+			if(time == 20) {
 				goalx = 10;
 				goaly = -30;
 				SoundHandler.playSound("/sound/effects/blips/tblip"+((int)(Math.random()*3)+1)+".wav");

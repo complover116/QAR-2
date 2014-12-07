@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,14 +49,28 @@ public class ResourceLoader extends SwingWorker<Void, ProgressUpdate> {
 			publish(new ProgressUpdate(i, images.get(i)));
 		}
 		//LOAD SOUNDS
+		int failed = 0;
 				for(int i = 0; i < sounds.size(); i ++){
+					try{
 					AudioInputStream audioIn = AudioSystem.getAudioInputStream(new BufferedInputStream(this.getClass().getResourceAsStream(sounds.get(i))));
-					Clip clip1 = AudioSystem.getClip();
-					clip1.open(audioIn);
-					ResourceContainer.sounds.put(sounds.get(i), clip1);
+					ResourceContainer.format = audioIn.getFormat();
+					byte data[] = new byte[audioIn.available()];
+					audioIn.read(data, 0, 20971520);
+					ResourceContainer.sounds.put(sounds.get(i), data);
 					Thread.sleep(20);
 					publish(new ProgressUpdate(i+images.size()-1, sounds.get(i)));
+					} catch(IOException e) {
+						failed ++;
+					}
 				}
+				if(failed > 0){
+					if(failed >= sounds.size())
+						JOptionPane.showMessageDialog(GUI.mainFrame, "No sounds were able to load - there must be something wrong!", "Error", JOptionPane.ERROR_MESSAGE);
+					else
+					JOptionPane.showMessageDialog(GUI.mainFrame, "Could not load "+failed+" sounds!\nThere must be a mistake in SoundList!", "Error", JOptionPane.WARNING_MESSAGE);
+				}
+				
+				
 				//PREPARE GENERATED IMAGES
 				System.out.println("===PREPARING GENERATED IMAGES===");
 				String[] itg = {"/img/player/idle.png","/img/player/limb2.png","/img/player/limb1.png"};

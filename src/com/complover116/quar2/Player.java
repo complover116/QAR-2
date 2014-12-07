@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 
 public class Player {
 	public Pos pos = new Pos();
-	public int color = 1;
+	public int color = 4;
 	public Leg leftLeg;
 	public Leg rightLeg;
 	public Arm rightArm;
@@ -27,6 +27,7 @@ public class Player {
 	public int time = 0;
 	public World world;
 	public Usable using = null;
+	public boolean onGround = false;
 	public boolean looksright = true;
 	public Usable getUsable() {
 		System.out.println("Loooking for usables...");
@@ -58,6 +59,8 @@ public class Player {
 		this.using = null;
 	}
 	void leganim(int offset) {
+		if(world.isRemote)
+		if(onGround){
 		if(leganimstat){
 			leganim -=offset;
 		} else {
@@ -68,6 +71,7 @@ public class Player {
 			leganimstat = !leganimstat;
 			if(leganim>52)leganim = 52;
 			if(leganim<15)leganim = 15;
+		}
 		}
 	}
 	public void tick() {
@@ -97,7 +101,7 @@ public class Player {
 				
 				if(new Rectangle((int) pos.x, (int)newY, 32,64).intersects(r)){
 					flag2 = false;
-					
+					this.onGround = true;
 					if(this.velY > 0){
 					
 					pos.y = r.getY() - 64;
@@ -118,13 +122,16 @@ public class Player {
 			movX = 0;
 		}
 		if(flag2){
+			this.onGround = false;
 			pos.y = newY;
 			}
+		if(world.isRemote){
 		//LIMBS TICK
 		this.leftLeg.tick();
 		this.rightLeg.tick();
 		rightArm.tick();
 		leftArm.tick();
+		}
 	}
 
 	public void draw(Graphics2D g2d) {

@@ -39,7 +39,7 @@ public class Loader {
 				}
 			}
 			initialized = false;
-			ServerData.world.ships[5] = new Ship(100,100,0);
+			ServerData.world.ships[5] = new Ship(400,500,57);
 			ServerData.world.ships[5].velX = 0;
 			ServerData.world.ships[5].velRot = 0;
 			ServerData.world.players[0] = new Player(ServerData.world, 256,128);
