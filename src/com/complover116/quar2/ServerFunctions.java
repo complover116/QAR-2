@@ -21,6 +21,9 @@ public class ServerFunctions {
 		player.downDatePos(data);
 		ServerThread.sendBytes(out);
 	}
+	public static void disconnect(RemoteClient client) {
+		
+	}
 	public static void sendPlayerInfo(Player player, int i) {
 		byte out[] = new byte[64];
 		out[0] = 3;

@@ -7,7 +7,7 @@ public class MessageDispatchThread implements Runnable {
 		System.out.println("Server MessageDispatchThread is running!");
 		while(true){
 			try {
-				Thread.sleep(2);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
