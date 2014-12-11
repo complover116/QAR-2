@@ -4,6 +4,7 @@ public class ClientTickerThread implements Runnable {
 
 	@Override
 	public void run() {
+		System.out.println("Client ticker thread has started...");
 		while(true) {
 			long tickstart = System.nanoTime();
 			ClientTicker.tick();

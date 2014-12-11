@@ -1,8 +1,13 @@
 package com.complover116.quar2;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 
-public class Arm extends Limb{
+public class Arm extends Limb implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3442492942501578160L;
 	int time = 0;
 	boolean right = false;
 	double goalx;
@@ -69,17 +74,18 @@ public class Arm extends Limb{
 				}
 			}
 		} else if (player.anim == 1){
-			this.moveSpeed = 1;
+			this.moveSpeed = 2;
 			time ++;
-			if(time > 30&&Math.random()>0.95){
+			if(time > 40&&Math.random()>0.95){
 				time = 0;
 				double offset = Math.random()*20;
 				goaly = -50+offset;
 				goalx = 32.5+offset;
 			}
-			if(time == 15) {
+			if(time == 20) {
 				goalx = 10;
 				goaly = -30;
+				SoundHandler.playSound("/sound/effects/blips/tblip"+((int)(Math.random()*3)+1)+".wav");
 			}
 			
 		}

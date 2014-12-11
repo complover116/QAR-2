@@ -16,14 +16,14 @@ public class Render extends JPanel implements KeyListener {
 	 */
 	private static final long serialVersionUID = 1224246674901715075L;
 	public static double lrot = 0;
-	
+	public static double loadspeed = 5;
 	public static String loadStep = "Waiting for user";
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(new Color(0,0,0));
 		if(!Loader.initialized) {
-			lrot+=5;
+			lrot+=loadspeed;
 			if(lrot > 360) lrot = lrot - 360;
 			AffineTransform tr = AffineTransform.getTranslateInstance(350,300);
 			tr.concatenate(AffineTransform.getRotateInstance(Math.toRadians(lrot), 64, 64));
@@ -37,18 +37,16 @@ public class Render extends JPanel implements KeyListener {
 			g2d.drawString(loadStep, 280, 500);
 		} else {
 			
-			Ship shish = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid];
+			Ship shish = null;
 			
 			
 			try{
 			//CAMERA POSITIONING
-			
+			shish = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid];
 			double transformed[] = shish.transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
 			g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
 			g2d.transform(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 400, -transformed[1] - shish.y+ 400));
-			} catch (NullPointerException e) {
-				System.out.println("Camera positioning failed, possibly no data from server yet");
-			}
+			
 			
 			//HERE GOES NOTHING
 			//*No, really, it's about drawing the void of space
@@ -75,19 +73,19 @@ public class Render extends JPanel implements KeyListener {
 				}
 			}
 			
-			for(int i = 0; i < Config.maxShips; i ++) {
+			for(int i = 0; i < Config.maxPlayers; i ++) {
 				if(ClientData.world.players[i] != null) {
 					ClientData.world.players[i].draw(g2d);
 				}
 			}
 			try{
 				//CAMERA DISPOSITIONING
-				
-				double transformed[] = shish.transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
-				g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
+				transformed = shish.transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
 				g2d.transform(AffineTransform.getTranslateInstance(-(-transformed[0] - shish.x + 400), -(-transformed[1] - shish.y+ 400)));
+				g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
+				
 				} catch (NullPointerException e) {
-					System.out.println("Camera positioning failed, possibly no data from server yet");
+					System.out.println("Camera dispositioning failed, possibly no data from server yet");
 				}
 			//HUD RENDERING
 			if(ClientThread.timeout > ClientThread.timeoutLow) {
@@ -98,7 +96,9 @@ public class Render extends JPanel implements KeyListener {
 			
 			//USABLE HUD
 			ClientData.hud.draw(g2d);
-			
+			} catch (NullPointerException e) {
+				System.out.println("No data from server yet - skipping render frames");
+			}
 		}
 	}
 

@@ -4,8 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 
-public class Limb {
+public class Limb implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7142616134134096075L;
 	public Player player;
 	public byte forcebend = 0;
 	public Pos end = new Pos();
@@ -54,7 +59,7 @@ public class Limb {
 		trans.concatenate(AffineTransform.getRotateInstance(Math
 				.toRadians(ClientData.world.ships[player.shipid].rot)));
 		trans.concatenate(AffineTransform.getRotateInstance(-angle, 0, 1.5));
-		g2d.drawImage(ResourceContainer.images.get("/img/player/limb2.png"),
+		g2d.drawImage(ResourceContainer.images.get("/img/player/limb2.png-"+ResourceLoader.colnames[player.color]),
 				trans, null);
 	}
 	void rtsandr(Rectangle r, Graphics2D g2d) {

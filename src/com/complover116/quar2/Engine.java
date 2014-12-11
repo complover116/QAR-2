@@ -2,8 +2,13 @@ package com.complover116.quar2;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 
-public class Engine extends ShipJect {
+public class Engine extends ShipJect implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3381261924780498053L;
 	public double thrust = 0.1;
 	public Engine(Ship sh, double x, double y, double rot) {
 		super(sh, x, y, rot);

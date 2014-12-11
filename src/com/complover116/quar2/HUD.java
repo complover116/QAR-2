@@ -16,4 +16,16 @@ public enum HUD {
 		break;
 		}
 	}
+	public int toNumber() {
+		switch(this){
+		case PILOTING:return 1;
+		default:return 0;
+		}
+	}
+	public static HUD fromNumber(int num) {
+		switch(num){
+		case 1:return PILOTING;
+		default:return DEFAULT;
+		}
+	}
 }

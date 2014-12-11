@@ -21,5 +21,20 @@ public class ServerFunctions {
 		player.downDatePos(data);
 		ServerThread.sendBytes(out);
 	}
-	
+	public static void sendPlayerInfo(Player player, int i) {
+		byte out[] = new byte[64];
+		out[0] = 3;
+		out[1] = (byte) i;
+		ByteBuffer data = ByteBuffer.wrap(out, 2, 62);
+		data.putInt(player.color);
+		ServerThread.sendBytes(out);
+	}
+	public static void sendHUDType(Player player, int i) {
+		byte out[] = new byte[64];
+		out[0] = 2;
+		out[1] = (byte) i;
+		ByteBuffer data = ByteBuffer.wrap(out, 2, 62);
+		player.downDatePos(data);
+		ServerThread.sendBytes(out);
+	}
 }

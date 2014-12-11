@@ -15,7 +15,7 @@ public class Ticker {
 			}
 		}
 		//SENDING PLAYER INFO
-		for(int i = 0; i < Config.maxShips; i ++) {
+		for(int i = 0; i < 2; i ++) {
 			//IF IT EXISTS
 			if(ServerData.world.players[i] != null) {
 				//SEND IT

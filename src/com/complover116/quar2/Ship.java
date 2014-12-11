@@ -2,10 +2,15 @@ package com.complover116.quar2;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class Ship {
+public class Ship implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6330349971680345419L;
 	public Hull[][] hull = new Hull[500][500];
 	public double x;
 	public double y;
@@ -23,6 +28,7 @@ public class Ship {
 		this.x = x;
 		this.y = y;
 		this.rot = rot;
+		hull[0][0] = new Hull(3);
 		hull[1][0] = new Hull(3);
 		hull[2][0] = new Hull(3);
 		hull[3][0] = new Hull(3);
@@ -31,19 +37,40 @@ public class Ship {
 		hull[6][0] = new Hull(3);
 		hull[7][0] = new Hull(3);
 		hull[8][0] = new Hull(3);
-		hull[9][0] = new Hull(3);
+		hull[9][0] = new Hull(3); 
 		hull[10][0] = new Hull(3);
+		hull[11][0] = new Hull(3);
+		hull[12][0] = new Hull(3);
+		hull[13][0] = new Hull(3);
+		hull[14][0] = new Hull(3);
+		hull[15][0] = new Hull(3);
+		hull[16][0] = new Hull(3);
+		hull[17][0] = new Hull(3);
+		hull[18][0] = new Hull(3);
+		hull[19][0] = new Hull(3);
+		hull[20][0] = new Hull(3);
 		
-		hull[0][9] = new Hull(3);
-		hull[1][9] = new Hull(3);
-		hull[2][9] = new Hull(3);
-		hull[3][9] = new Hull(3);
-		hull[4][9] = new Hull(3);
-		hull[5][9] = new Hull(3);
-		hull[6][9] = new Hull(3);
-		hull[7][9] = new Hull(3);
-		hull[8][9] = new Hull(3);
-		hull[9][9] = new Hull(3);
+		hull[0][13] = new Hull(3);
+		hull[1][13] = new Hull(3);
+		hull[2][13] = new Hull(3);
+		hull[3][13] = new Hull(3);
+		hull[4][13] = new Hull(3);
+		hull[5][13] = new Hull(3);
+		hull[6][13] = new Hull(3);
+		hull[7][13] = new Hull(3);
+		hull[8][13] = new Hull(3);
+		hull[9][13] = new Hull(3);
+		hull[10][13] = new Hull(3);
+		hull[11][13] = new Hull(3);
+		hull[12][13] = new Hull(3);
+		hull[13][13] = new Hull(3);
+		hull[14][13] = new Hull(3);
+		hull[15][13] = new Hull(3);
+		hull[16][13] = new Hull(3);
+		hull[17][13] = new Hull(3);
+		hull[18][13] = new Hull(3);
+		hull[19][13] = new Hull(3);
+		hull[20][13] = new Hull(3);
 		
 		hull[0][1] = new Hull(3);
 		hull[0][2] = new Hull(3);
@@ -54,6 +81,9 @@ public class Ship {
 		hull[0][7] = new Hull(3);
 		hull[0][8] = new Hull(3);
 		hull[0][9] = new Hull(3);
+		hull[0][10] = new Hull(3);
+		hull[0][11] = new Hull(3);
+		hull[0][12] = new Hull(3);
 		
 		/*hull[9][1] = new Hull(3);
 		hull[9][2] = new Hull(3);
@@ -69,6 +99,7 @@ public class Ship {
 		objects.add(new Engine(this, -64,64,0));
 	}
 	public void tick() {
+		velRot *= 0.99;
 		this.x += velX;
 		this.y += velY;
 		this.rot += velRot;

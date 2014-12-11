@@ -3,8 +3,14 @@ package com.complover116.quar2;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 
-public class EnginesPanel extends Panel {
+public class EnginesPanel extends Panel implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2104368842861905993L;
 
 	public EnginesPanel(Ship sh, double x, double y, double rot) {
 		super(sh, x, y, rot);

@@ -3,10 +3,16 @@ package com.complover116.quar2;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 
-public class Player {
+public class Player implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6679268673263726581L;
 	public Pos pos = new Pos();
+	public int color = 1;
 	public Leg leftLeg;
 	public Leg rightLeg;
 	public Arm rightArm;
@@ -26,6 +32,7 @@ public class Player {
 	public int time = 0;
 	public World world;
 	public Usable using = null;
+	public boolean onGround = false;
 	public boolean looksright = true;
 	public Usable getUsable() {
 		System.out.println("Loooking for usables...");
@@ -57,22 +64,27 @@ public class Player {
 		this.using = null;
 	}
 	void leganim(int offset) {
+		if(world.isRemote)
+		if(onGround){
 		if(leganimstat){
 			leganim -=offset;
 		} else {
 			leganim +=offset;
 		}
 		if(leganim>52||leganim<15){
+			SoundHandler.playSound("/sound/effects/step/metal"+((int)(Math.random()*2)+1)+".wav");
 			leganimstat = !leganimstat;
 			if(leganim>52)leganim = 52;
 			if(leganim<15)leganim = 15;
 		}
+		}
 	}
 	public void tick() {
-		leganim(movX*2);
+		leganim(movX*speedX);
 		time ++;
 		boolean flag;
 		boolean flag2 = true;
+		if(!world.isRemote){
 		// COLLISIONS
 		double newY = pos.y + this.velY;
 		double newX = pos.x + movX * speedX;
@@ -95,7 +107,7 @@ public class Player {
 				
 				if(new Rectangle((int) pos.x, (int)newY, 32,64).intersects(r)){
 					flag2 = false;
-					
+					this.onGround = true;
 					if(this.velY > 0){
 					
 					pos.y = r.getY() - 64;
@@ -116,13 +128,17 @@ public class Player {
 			movX = 0;
 		}
 		if(flag2){
+			this.onGround = false;
 			pos.y = newY;
 			}
+		}
+		if(world.isRemote){
 		//LIMBS TICK
 		this.leftLeg.tick();
 		this.rightLeg.tick();
 		rightArm.tick();
 		leftArm.tick();
+		}
 	}
 
 	public void draw(Graphics2D g2d) {
@@ -132,7 +148,7 @@ public class Player {
 				transformed[1] + ClientData.world.ships[shipid].y);
 		trans.concatenate(AffineTransform.getRotateInstance(Math
 				.toRadians(ClientData.world.ships[shipid].rot)));
-		g2d.drawImage(ResourceContainer.images.get("/img/player/idle.png"),
+		g2d.drawImage(ResourceContainer.images.get("/img/player/idle.png-"+ResourceLoader.colnames[color]),
 				trans, null);
 		leftLeg.draw(g2d);
 		rightLeg.draw(g2d);
@@ -146,6 +162,11 @@ public class Player {
 		data.putDouble(velY);
 		data.putInt(shipid);
 		data.putInt(anim);
+		if(onGround){
+		data.put((byte) 1);
+		} else {
+			data.put((byte) 0);
+		}
 	}
 
 	public void upDatePos(ByteBuffer data) {
@@ -154,6 +175,11 @@ public class Player {
 		velY = data.getDouble();
 		shipid = data.getInt();
 		anim = data.getInt();
+		if(data.get() == 0){
+			onGround = false;
+		}else {
+			onGround = true;
+		}
 	}
 
 	public void keyPress(byte[] in) {
@@ -178,11 +204,23 @@ public class Player {
 		// Now, check whether this is a move key
 		if (key == CharData.A){
 			this.movX = -1;
+			if(looksright){
 		looksright = false;
+		leftArm.offsetX = -15.5;
+		rightArm.offsetX = 15.5;
+		leftArm.offsetY = -48;
+		rightArm.offsetY = -48;
+			}
 		}
 		if (key == CharData.D){
 			this.movX = 1;
-		looksright = true;
+			if(!looksright){
+				looksright = true;
+				leftArm.offsetX = -15.5;
+				rightArm.offsetX = 15.5;
+				leftArm.offsetY = -48;
+				rightArm.offsetY = -48;
+			}
 		}
 		if (key == CharData.W&&this.jumpsLeft > 0){
 			this.jumpsLeft --;
