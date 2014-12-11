@@ -95,7 +95,7 @@ public class Render extends JPanel implements KeyListener {
 			}
 			
 			//USABLE HUD
-			ClientData.hud.draw(g2d);
+			ClientData.world.players[ClientData.controlledPlayer].hud.draw(g2d);
 			} catch (NullPointerException e) {
 				System.out.println("No data from server yet - skipping render frames");
 			}

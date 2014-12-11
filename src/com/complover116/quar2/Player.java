@@ -12,6 +12,7 @@ public class Player implements Serializable{
 	 */
 	private static final long serialVersionUID = 6679268673263726581L;
 	public Pos pos = new Pos();
+	public HUD hud = HUD.DEFAULT;
 	public int color = 1;
 	public Leg leftLeg;
 	public Leg rightLeg;
@@ -154,6 +155,16 @@ public class Player implements Serializable{
 		rightLeg.draw(g2d);
 		rightArm.draw(g2d);
 		leftArm.draw(g2d);
+		/*if(hud == HUD.PILOTING) {
+			double transformed2[] = ClientData.world.ships[shipid].transform(pos.x, pos.y+32);
+			AffineTransform trans2 = AffineTransform.getTranslateInstance(
+					transformed2[0] + ClientData.world.ships[shipid].x,
+					transformed2[1] + ClientData.world.ships[shipid].y);
+			trans.concatenate(AffineTransform.getRotateInstance(Math
+					.toRadians(ClientData.world.ships[shipid].rot)));
+			g2d.drawImage(ResourceContainer.images.get("/img/loadAnim_small.png"),
+					trans2, null);
+		}*/
 	}
 
 	public void downDatePos(ByteBuffer data) {
@@ -167,6 +178,7 @@ public class Player implements Serializable{
 		} else {
 			data.put((byte) 0);
 		}
+		data.putInt(hud.toNumber());
 	}
 
 	public void upDatePos(ByteBuffer data) {
@@ -180,6 +192,7 @@ public class Player implements Serializable{
 		}else {
 			onGround = true;
 		}
+		hud = HUD.fromNumber(data.getInt());
 	}
 
 	public void keyPress(byte[] in) {

@@ -9,7 +9,7 @@ public class ClientFunctions {
 	public static void receiveShipData(byte[] in) {
 		if (ClientData.world.ships[in[1]] == null) {
 			System.out.println("CLIENT: CREATING SHIP, ID:"+in[1]);
-			ClientData.world.ships[in[1]] = new Ship(0,0,0);
+			ClientData.world.ships[in[1]] = new Ship(0,0,0, ClientData.world);
 			//REQUEST SHIP STRUCTURE
 		}
 		ClientData.world.ships[in[1]].updatePos(ByteBuffer.wrap(in, 2, 62));

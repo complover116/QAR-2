@@ -11,12 +11,14 @@ public class Ship implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 6330349971680345419L;
+	public World world = null;
 	public Hull[][] hull = new Hull[500][500];
 	public double x;
 	public double y;
 	public double rot;
 	public double velX = 0;
 	public double velY = 0;
+	public double mass = 0;
 	public double velRot = 0;
 	public double massX = 0;
 	public double massY = 0;
@@ -24,7 +26,8 @@ public class Ship implements Serializable{
 	public double thrustY = 0;
 	public double thrustRot = 0;
 	public ArrayList<ShipJect> objects = new ArrayList<ShipJect>();
-	public Ship(double x, double y, double rot) {
+	public Ship(double x, double y, double rot, World world) {
+		this.world = world;
 		this.x = x;
 		this.y = y;
 		this.rot = rot;
@@ -102,6 +105,8 @@ public class Ship implements Serializable{
 		velRot *= 0.99;
 		this.x += velX;
 		this.y += velY;
+		this.velX *= 0.99;
+		this.velY *= 0.99;
 		this.rot += velRot;
 		for(int i =0 ;i <this.objects.size(); i ++) this.objects.get(i).tick();
 	}
@@ -112,6 +117,7 @@ public class Ship implements Serializable{
 		this.velX = data.getDouble();
 		this.velY = data.getDouble();
 		this.velRot = data.getDouble();
+		this.thrustX = data.getDouble();
 	}
 	public void downDatePos(ByteBuffer data) {
 		data.putDouble(x);
@@ -120,14 +126,17 @@ public class Ship implements Serializable{
 		data.putDouble(velX);
 		data.putDouble(velY);
 		data.putDouble(velRot);
+		data.putDouble(thrustX);
 	}
 	public void calcMass() {
+		mass = 0;
 		double diver = 0;
 		double divingX = 0;
 		double divingY = 0;
 		for(int i = 0; i < 500; i ++)
 			for(int j = 0; j < 500; j ++){
 				if(hull[i][j] != null) {
+					mass ++;
 					diver ++;
 					divingX += i*32 + 16;
 					divingY += j*32 + 16;
