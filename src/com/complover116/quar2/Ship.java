@@ -52,6 +52,15 @@ public class Ship implements Serializable{
 		hull[18][0] = new Hull(3);
 		hull[19][0] = new Hull(3);
 		hull[20][0] = new Hull(3);
+		hull[21][0] = new Hull(3);
+		hull[22][0] = new Hull(3);
+		hull[23][0] = new Hull(3);
+		hull[24][0] = new Hull(3);
+		hull[25][0] = new Hull(3);
+		hull[26][0] = new Hull(3);
+		hull[27][0] = new Hull(3);
+		hull[28][0] = new Hull(3);
+		hull[29][0] = new Hull(3);
 		
 		hull[0][13] = new Hull(3);
 		hull[1][13] = new Hull(3);
@@ -88,25 +97,31 @@ public class Ship implements Serializable{
 		hull[0][11] = new Hull(3);
 		hull[0][12] = new Hull(3);
 		
-		/*hull[9][1] = new Hull(3);
-		hull[9][2] = new Hull(3);
-		hull[9][3] = new Hull(3);
-		hull[9][4] = new Hull(3);
-		hull[9][5] = new Hull(3);
-		hull[9][6] = new Hull(3);
-		hull[9][7] = new Hull(3);
-		hull[9][8] = new Hull(3);
-		hull[9][9] = new Hull(3);*/
+		hull[20][13] = new Hull(3);
+		hull[21][12] = new Hull(3);
+		hull[22][11] = new Hull(3);
+		hull[23][10] = new Hull(3);
+		hull[24][9] = new Hull(3);
+		hull[25][8] = new Hull(3);
+		hull[26][7] = new Hull(3);
+		hull[27][6] = new Hull(3);
+		hull[28][5] = new Hull(3);
+		hull[29][4] = new Hull(3);
+		hull[30][3] = new Hull(3);
+		hull[30][2] = new Hull(3);
+		hull[30][1] = new Hull(3);
+		hull[30][0] = new Hull(3);
 		calcMass();
-		objects.add(new EnginesPanel(this, 128,64,0));
+		objects.add(new EnginesPanel(this, 896,64,0));
 		objects.add(new Engine(this, -64,64,0));
+		objects.add(new Engine(this, -64,384,0));
 	}
 	public void tick() {
 		velRot *= 0.995;
 		this.x += velX;
 		this.y += velY;
-		this.velX *= 0.997;
-		this.velY *= 0.997;
+		this.velX *= 0.995;
+		this.velY *= 0.995;
 		this.rot += velRot;
 		for(int i =0 ;i <this.objects.size(); i ++) this.objects.get(i).tick();
 	}

@@ -52,10 +52,10 @@ public class Render extends JPanel implements KeyListener {
 				transform.concatenate(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 400, -transformed[1] - shish.y+ 400));
 			}
 			if(ClientData.world.players[ClientData.controlledPlayer].hud == HUD.PILOTING){
-				double transformed[] = shish.transform(shish.massX, shish.massY);
-				transform = AffineTransform.getScaleInstance(0.5,0.5);
-				transform.concatenate(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
-				transform.concatenate(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 200, -transformed[1] - shish.y+ 200));
+				double transformed[] = shish.transform(shish.massX-shish.velX*10, shish.massY-shish.velY*10);
+				transform = AffineTransform.getScaleInstance(0.25,0.25);
+				//transform.concatenate(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
+				transform.concatenate(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 1600, -transformed[1] - shish.y + 1600));
 			}
 			g2d.transform(transform);
 			
@@ -77,10 +77,10 @@ public class Render extends JPanel implements KeyListener {
 				}
 			}
 			g2d.setColor(new Color(0,255,0));
-			//DEBUG GRID
+			/*//DEBUG GRID
 			for(int i = 0; i < 100; i ++) {
 				g2d.drawLine(0, i*100, 10000, i*100);
-			}
+			}*/
 			//HERE GOES THE UNIVERSE
 			for(int i = 0; i < Config.maxShips; i ++) {
 				if(ClientData.world.ships[i] != null) {
