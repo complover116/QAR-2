@@ -108,12 +108,14 @@ public class Player implements Serializable{
 				
 				if(new Rectangle((int) pos.x, (int)newY, 32,64).intersects(r)){
 					flag2 = false;
+					//if(!this.onGround)
+					//	SoundHandler.playSound("/sound/effects/step/metal"+((int)(Math.random()*2)+1)+".wav");
 					this.onGround = true;
 					if(this.velY > 0){
 					
 					pos.y = r.getY() - 64;
 					} else {
-						pos.y = r.getY() + r.getHeight();
+						//pos.y = r.getY() + r.getHeight();
 						this.jumpsLeft = 1;
 					}
 					this.velY = 0;

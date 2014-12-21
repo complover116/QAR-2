@@ -39,7 +39,7 @@ public class ClientThread implements Runnable {
 	public static final int timeoutHigh = 50;
 	public ClientThread() {
 		try {
-			socket = new DatagramSocket();
+			socket = new DatagramSocket(1234);
 		} catch (SocketException e) {
 			e.printStackTrace();
 			SoundHandler.playSound("/sound/effects/error1.wav");

@@ -21,6 +21,10 @@ public abstract class ShipJect implements Serializable {
 		double[] res = ship.transform(pos.x, pos.y);
 		return new double[]{ship.x+res[0],ship.y+res[1],ship.rot};
 	}
+	public double[] absPos(double xOffset, double yOffset) {
+		double[] res = ship.transform(pos.x+xOffset, pos.y+yOffset);
+		return new double[]{ship.x+res[0],ship.y+res[1],ship.rot};
+	}
 	public abstract void draw(Graphics2D g2d);
 	public abstract void tick();
 }

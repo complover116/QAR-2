@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 
 import javax.swing.JPanel;
 
@@ -43,10 +44,20 @@ public class Render extends JPanel implements KeyListener {
 			try{
 			//CAMERA POSITIONING
 			shish = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid];
-			double transformed[] = shish.transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
-			g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
-			g2d.transform(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 400, -transformed[1] - shish.y+ 400));
 			
+			AffineTransform transform = null;
+			if(ClientData.world.players[ClientData.controlledPlayer].hud == HUD.DEFAULT){
+				double transformed[] = shish.transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
+				transform = AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400);
+				transform.concatenate(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 400, -transformed[1] - shish.y+ 400));
+			}
+			if(ClientData.world.players[ClientData.controlledPlayer].hud == HUD.PILOTING){
+				double transformed[] = shish.transform(shish.massX, shish.massY);
+				transform = AffineTransform.getScaleInstance(0.5,0.5);
+				transform.concatenate(AffineTransform.getRotateInstance(Math.toRadians(-ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
+				transform.concatenate(AffineTransform.getTranslateInstance(-transformed[0] - shish.x + 200, -transformed[1] - shish.y+ 200));
+			}
+			g2d.transform(transform);
 			
 			//HERE GOES NOTHING
 			//*No, really, it's about drawing the void of space
@@ -65,7 +76,11 @@ public class Render extends JPanel implements KeyListener {
 					}
 				}
 			}
-			
+			g2d.setColor(new Color(0,255,0));
+			//DEBUG GRID
+			for(int i = 0; i < 100; i ++) {
+				g2d.drawLine(0, i*100, 10000, i*100);
+			}
 			//HERE GOES THE UNIVERSE
 			for(int i = 0; i < Config.maxShips; i ++) {
 				if(ClientData.world.ships[i] != null) {
@@ -78,15 +93,8 @@ public class Render extends JPanel implements KeyListener {
 					ClientData.world.players[i].draw(g2d);
 				}
 			}
-			try{
-				//CAMERA DISPOSITIONING
-				transformed = shish.transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
-				g2d.transform(AffineTransform.getTranslateInstance(-(-transformed[0] - shish.x + 400), -(-transformed[1] - shish.y+ 400)));
-				g2d.transform(AffineTransform.getRotateInstance(Math.toRadians(ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].rot), 400, 400));
-				
-				} catch (NullPointerException e) {
-					System.out.println("Camera dispositioning failed, possibly no data from server yet");
-				}
+			//CAMERA DISPOSITIONING
+			g2d.transform(transform.createInverse());
 			//HUD RENDERING
 			if(ClientThread.timeout > ClientThread.timeoutLow) {
 				g2d.setColor(new Color(255,0,0));
@@ -98,6 +106,9 @@ public class Render extends JPanel implements KeyListener {
 			ClientData.world.players[ClientData.controlledPlayer].hud.draw(g2d);
 			} catch (NullPointerException e) {
 				System.out.println("No data from server yet - skipping render frames");
+			} catch (NoninvertibleTransformException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

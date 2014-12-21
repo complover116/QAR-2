@@ -26,11 +26,11 @@ public class EnginesPanel extends Panel implements Serializable {
 			this.rot = -1;
 		if (key == CharData.D)
 			this.rot = 1;
-		if (key == CharData.S&&this.goalThrust > 0){
-			this.goalThrust -= 10;
+		if (key == CharData.S){
+			ship.thrustX = -100;
 		}
-		if (key == CharData.W&&this.goalThrust < 100){
-			this.goalThrust += 10;
+		if (key == CharData.W){
+			ship.thrustX = 100;
 		}
 	}
 
@@ -41,6 +41,8 @@ public class EnginesPanel extends Panel implements Serializable {
 			this.rot = 0;
 		if (key == CharData.D&&this.rot == 1)
 			this.rot = 0;
+		if(key == CharData.W&&ship.thrustX == 100) ship.thrustX = 0;
+		if(key == CharData.S&&ship.thrustX == -100) ship.thrustX = 0;
 	}
 
 	public void draw(Graphics2D g2d) {
@@ -56,12 +58,6 @@ public class EnginesPanel extends Panel implements Serializable {
 	@Override
 	public void tick() {
 		ship.velRot+=(double)this.rot/ship.mass;
-		if(ship.thrustX < this.goalThrust) {
-			ship.thrustX += 0.5;
-		}
-		if(ship.thrustX > this.goalThrust) {
-			ship.thrustX -= 0.5;
-		}
 	}
 
 	@Override
