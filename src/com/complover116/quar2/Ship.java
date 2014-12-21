@@ -113,8 +113,9 @@ public class Ship implements Serializable{
 		hull[30][0] = new Hull(3);
 		calcMass();
 		objects.add(new EnginesPanel(this, 896,64,0));
-		objects.add(new Engine(this, -64,64,0));
-		objects.add(new Engine(this, -64,384,0));
+		objects.add(new Engine(this, 928,64,0, (byte) 2));
+		objects.add(new Engine(this, -64,64,0, (byte) 1));
+		objects.add(new Engine(this, -64,384,0, (byte) 1));
 	}
 	public void tick() {
 		velRot *= 0.995;
