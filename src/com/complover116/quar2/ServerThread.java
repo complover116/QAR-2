@@ -35,6 +35,9 @@ public class ServerThread implements Runnable {
 			DatagramPacket incoming = new DatagramPacket(in, in.length);
 			try {
 				socket.receive(incoming);
+				if (in[0] == 10) {
+					ServerFunctions.sendShip(ServerData.world.ships[in[1]], in[1]);
+				}
 				if (in[0] == 124) {
 					System.out.println("Incoming connection:"+incoming.getAddress());
 					int i = 0;

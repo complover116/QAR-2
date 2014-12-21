@@ -39,7 +39,7 @@ public class ClientThread implements Runnable {
 	public static final int timeoutHigh = 50;
 	public ClientThread() {
 		try {
-			socket = new DatagramSocket(1234);
+			socket = new DatagramSocket();
 		} catch (SocketException e) {
 			e.printStackTrace();
 			SoundHandler.playSound("/sound/effects/error1.wav");
@@ -100,6 +100,9 @@ public class ClientThread implements Runnable {
 				break;
 				case 3:
 					ClientFunctions.receivePlayerInfo(in);
+				break;
+				case 10:
+					ClientFunctions.receiveShip(in);
 				break;
 				case -1:
 					System.out.println("SpaapS");

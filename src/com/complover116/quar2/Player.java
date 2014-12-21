@@ -91,8 +91,8 @@ public class Player implements Serializable{
 		double newX = pos.x + movX * speedX;
 		this.velY -= 1;
 		flag = true;
-		for (int i = 0; i < 500; i++)
-			for (int j = 0; j < 500; j++) {
+		for (int i = 0; i < 256; i++)
+			for (int j = 0; j < 256; j++) {
 				if(ServerData.world.ships[shipid].hull[i][j] != null){
 				Rectangle r = new Rectangle(i * 32, j * 32 + 32, 32, 32);
 				if (new Rectangle((int) newX, (int) pos.y, 32, 64).intersects(r)) {

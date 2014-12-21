@@ -13,8 +13,7 @@ public class MessageDispatchThread implements Runnable {
 				e.printStackTrace();
 			}
 			if(ServerThread.outgoing.size() > 20) {
-				System.out.println("Out buffer is overflowing! Resetting...");
-				ServerThread.outgoing.clear();
+				System.out.println("MDT Buffer has "+ServerThread.outgoing.size()+" packets to send!");
 			}
 			while(ServerThread.outgoing.size() > 0) {
 				ServerThread.sendBytesOld(ServerThread.outgoing.get(0));

@@ -12,7 +12,7 @@ public class Ship implements Serializable{
 	 */
 	private static final long serialVersionUID = 6330349971680345419L;
 	public World world = null;
-	public Hull[][] hull = new Hull[500][500];
+	public Hull[][] hull = new Hull[256][256];
 	public double x;
 	public double y;
 	public double rot;
@@ -31,91 +31,7 @@ public class Ship implements Serializable{
 		this.x = x;
 		this.y = y;
 		this.rot = rot;
-		hull[0][0] = new Hull(3);
-		hull[1][0] = new Hull(3);
-		hull[2][0] = new Hull(3);
-		hull[3][0] = new Hull(3);
-		hull[4][0] = new Hull(3);
-		hull[5][0] = new Hull(3);
-		hull[6][0] = new Hull(3);
-		hull[7][0] = new Hull(3);
-		hull[8][0] = new Hull(3);
-		hull[9][0] = new Hull(3); 
-		hull[10][0] = new Hull(3);
-		hull[11][0] = new Hull(3);
-		hull[12][0] = new Hull(3);
-		hull[13][0] = new Hull(3);
-		hull[14][0] = new Hull(3);
-		hull[15][0] = new Hull(3);
-		hull[16][0] = new Hull(3);
-		hull[17][0] = new Hull(3);
-		hull[18][0] = new Hull(3);
-		hull[19][0] = new Hull(3);
-		hull[20][0] = new Hull(3);
-		hull[21][0] = new Hull(3);
-		hull[22][0] = new Hull(3);
-		hull[23][0] = new Hull(3);
-		hull[24][0] = new Hull(3);
-		hull[25][0] = new Hull(3);
-		hull[26][0] = new Hull(3);
-		hull[27][0] = new Hull(3);
-		hull[28][0] = new Hull(3);
-		hull[29][0] = new Hull(3);
 		
-		hull[0][13] = new Hull(3);
-		hull[1][13] = new Hull(3);
-		hull[2][13] = new Hull(3);
-		hull[3][13] = new Hull(3);
-		hull[4][13] = new Hull(3);
-		hull[5][13] = new Hull(3);
-		hull[6][13] = new Hull(3);
-		hull[7][13] = new Hull(3);
-		hull[8][13] = new Hull(3);
-		hull[9][13] = new Hull(3);
-		hull[10][13] = new Hull(3);
-		hull[11][13] = new Hull(3);
-		hull[12][13] = new Hull(3);
-		hull[13][13] = new Hull(3);
-		hull[14][13] = new Hull(3);
-		hull[15][13] = new Hull(3);
-		hull[16][13] = new Hull(3);
-		hull[17][13] = new Hull(3);
-		hull[18][13] = new Hull(3);
-		hull[19][13] = new Hull(3);
-		hull[20][13] = new Hull(3);
-		
-		hull[0][1] = new Hull(3);
-		hull[0][2] = new Hull(3);
-		hull[0][3] = new Hull(3);
-		hull[0][4] = new Hull(3);
-		hull[0][5] = new Hull(3);
-		hull[0][6] = new Hull(3);
-		hull[0][7] = new Hull(3);
-		hull[0][8] = new Hull(3);
-		hull[0][9] = new Hull(3);
-		hull[0][10] = new Hull(3);
-		hull[0][11] = new Hull(3);
-		hull[0][12] = new Hull(3);
-		
-		hull[20][13] = new Hull(3);
-		hull[21][12] = new Hull(3);
-		hull[22][11] = new Hull(3);
-		hull[23][10] = new Hull(3);
-		hull[24][9] = new Hull(3);
-		hull[25][8] = new Hull(3);
-		hull[26][7] = new Hull(3);
-		hull[27][6] = new Hull(3);
-		hull[28][5] = new Hull(3);
-		hull[29][4] = new Hull(3);
-		hull[30][3] = new Hull(3);
-		hull[30][2] = new Hull(3);
-		hull[30][1] = new Hull(3);
-		hull[30][0] = new Hull(3);
-		calcMass();
-		objects.add(new EnginesPanel(this, 896,64,0));
-		objects.add(new Engine(this, 928,64,0, (byte) 2));
-		objects.add(new Engine(this, -64,64,0, (byte) 1));
-		objects.add(new Engine(this, -64,384,0, (byte) 1));
 	}
 	public void tick() {
 		velRot *= 0.995;
@@ -149,8 +65,8 @@ public class Ship implements Serializable{
 		double diver = 0;
 		double divingX = 0;
 		double divingY = 0;
-		for(int i = 0; i < 500; i ++)
-			for(int j = 0; j < 500; j ++){
+		for(int i = 0; i < 256; i ++)
+			for(int j = 0; j < 256; j ++){
 				if(hull[i][j] != null) {
 					mass ++;
 					diver ++;
@@ -189,8 +105,8 @@ public class Ship implements Serializable{
 		return new double[]{relx,rely};
 	}
 	public void draw(Graphics2D g2d) {
-		for(int i = 0; i < 500; i ++)
-			for(int j = 0; j < 500; j ++){
+		for(int i = 0; i < 256; i ++)
+			for(int j = 0; j < 256; j ++){
 				if(hull[i][j] != null) {
 					
 					double[] transformed = transform(i*32,j*32);

@@ -2,6 +2,7 @@ package com.complover116.quar2;
 
 import java.awt.Graphics2D;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 public abstract class ShipJect implements Serializable {
 	/**
@@ -16,6 +17,15 @@ public abstract class ShipJect implements Serializable {
 		this.pos.x = x;
 		this.pos.y = y;
 		this.rot = rot;
+	}
+	public byte[] downDate() {
+		byte[] b = new byte[60];
+		ByteBuffer bb = 
+		ByteBuffer.wrap(b);
+		bb.putDouble(pos.x);
+		bb.putDouble(pos.y);
+		bb.putDouble(rot);
+		return b;
 	}
 	public double[] absPos() {
 		double[] res = ship.transform(pos.x, pos.y);

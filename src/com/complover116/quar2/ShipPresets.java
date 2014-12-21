@@ -1,0 +1,91 @@
+package com.complover116.quar2;
+
+public class ShipPresets {
+	public static void loadDefault(Ship sh) {
+		sh.hull[0][0] = new Hull(3);
+		sh.hull[1][0] = new Hull(3);
+		sh.hull[2][0] = new Hull(3);
+		sh.hull[3][0] = new Hull(3);
+		sh.hull[4][0] = new Hull(3);
+		sh.hull[5][0] = new Hull(3);
+		sh.hull[6][0] = new Hull(3);
+		sh.hull[7][0] = new Hull(3);
+		sh.hull[8][0] = new Hull(3);
+		sh.hull[9][0] = new Hull(3); 
+		sh.hull[10][0] = new Hull(3);
+		sh.hull[11][0] = new Hull(3);
+		sh.hull[12][0] = new Hull(3);
+		sh.hull[13][0] = new Hull(3);
+		sh.hull[14][0] = new Hull(3);
+		sh.hull[15][0] = new Hull(3);
+		sh.hull[16][0] = new Hull(3);
+		sh.hull[17][0] = new Hull(3);
+		sh.hull[18][0] = new Hull(3);
+		sh.hull[19][0] = new Hull(3);
+		sh.hull[20][0] = new Hull(3);
+		sh.hull[21][0] = new Hull(3);
+		sh.hull[22][0] = new Hull(3);
+		sh.hull[23][0] = new Hull(3);
+		sh.hull[24][0] = new Hull(3);
+		sh.hull[25][0] = new Hull(3);
+		sh.hull[26][0] = new Hull(3);
+		sh.hull[27][0] = new Hull(3);
+		sh.hull[28][0] = new Hull(3);
+		sh.hull[29][0] = new Hull(3);
+		
+		sh.hull[0][13] = new Hull(3);
+		sh.hull[1][13] = new Hull(3);
+		sh.hull[2][13] = new Hull(3);
+		sh.hull[3][13] = new Hull(3);
+		sh.hull[4][13] = new Hull(3);
+		sh.hull[5][13] = new Hull(3);
+		sh.hull[6][13] = new Hull(3);
+		sh.hull[7][13] = new Hull(3);
+		sh.hull[8][13] = new Hull(3);
+		sh.hull[9][13] = new Hull(3);
+		sh.hull[10][13] = new Hull(3);
+		sh.hull[11][13] = new Hull(3);
+		sh.hull[12][13] = new Hull(3);
+		sh.hull[13][13] = new Hull(3);
+		sh.hull[14][13] = new Hull(3);
+		sh.hull[15][13] = new Hull(3);
+		sh.hull[16][13] = new Hull(3);
+		sh.hull[17][13] = new Hull(3);
+		sh.hull[18][13] = new Hull(3);
+		sh.hull[19][13] = new Hull(3);
+		sh.hull[20][13] = new Hull(3);
+		
+		sh.hull[0][1] = new Hull(3);
+		sh.hull[0][2] = new Hull(3);
+		sh.hull[0][3] = new Hull(3);
+		sh.hull[0][4] = new Hull(3);
+		sh.hull[0][5] = new Hull(3);
+		sh.hull[0][6] = new Hull(3);
+		sh.hull[0][7] = new Hull(3);
+		sh.hull[0][8] = new Hull(3);
+		sh.hull[0][9] = new Hull(3);
+		sh.hull[0][10] = new Hull(3);
+		sh.hull[0][11] = new Hull(3);
+		sh.hull[0][12] = new Hull(3);
+		
+		sh.hull[20][13] = new Hull(3);
+		sh.hull[21][12] = new Hull(3);
+		sh.hull[22][11] = new Hull(3);
+		sh.hull[23][10] = new Hull(3);
+		sh.hull[24][9] = new Hull(3);
+		sh.hull[25][8] = new Hull(3);
+		sh.hull[26][7] = new Hull(3);
+		sh.hull[27][6] = new Hull(3);
+		sh.hull[28][5] = new Hull(3);
+		sh.hull[29][4] = new Hull(3);
+		sh.hull[30][3] = new Hull(3);
+		sh.hull[30][2] = new Hull(3);
+		sh.hull[30][1] = new Hull(3);
+		sh.hull[30][0] = new Hull(3);
+		sh.calcMass();
+		sh.objects.add(new EnginesPanel(sh, 896,64,0));
+		sh.objects.add(new Engine(sh, 928,64,0, (byte) 2));
+		sh.objects.add(new Engine(sh, -64,64,0, (byte) 1));
+		sh.objects.add(new Engine(sh, -64,384,0, (byte) 1));
+	}
+}
