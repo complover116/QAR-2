@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 
 public class Ship implements Serializable{
 	/**
@@ -25,7 +24,7 @@ public class Ship implements Serializable{
 	public double thrustX = 0;
 	public double thrustY = 0;
 	public double thrustRot = 0;
-	public ArrayList<ShipJect> objects = new ArrayList<ShipJect>();
+	public ShipJect objects[] = new ShipJect[256];
 	public Ship(double x, double y, double rot, World world) {
 		this.world = world;
 		this.x = x;
@@ -40,7 +39,7 @@ public class Ship implements Serializable{
 		this.velX *= 0.995;
 		this.velY *= 0.995;
 		this.rot += velRot;
-		for(int i =0 ;i <this.objects.size(); i ++) this.objects.get(i).tick();
+		for(int i =0 ;i <this.objects.length; i ++) if(objects[i] != null) this.objects[i].tick();
 	}
 	public void updatePos(ByteBuffer data) {
 		this.x = data.getDouble();
@@ -115,8 +114,26 @@ public class Ship implements Serializable{
 					g2d.drawImage(ResourceContainer.images.get(hull[i][j].getImagePath()), trans,null);
 				}
 			}
-		for(int i = 0; i < objects.size(); i ++) {
-			objects.get(i).draw(g2d);
+		for(int i = 0; i < objects.length; i ++) {
+			if(objects[i] != null)
+			objects[i].draw(g2d);
 		}
+	}
+	
+	public byte registerShipJect(ShipJect obj) {
+		for(byte i = 0; i < 256; i++) {
+			if(objects[i] == null) {
+				objects[i] = obj;
+				obj.id = i;
+				return i;
+			}
+		}
+		return -1;
+	}
+	public boolean registerShipJect(ShipJect obj, byte id) {
+		if(objects[id] == null) return false;
+		objects[id] = obj;
+		obj.id = id;
+		return true;
 	}
 }

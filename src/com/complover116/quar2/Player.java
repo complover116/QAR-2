@@ -37,10 +37,10 @@ public class Player implements Serializable{
 	public boolean looksright = true;
 	public Usable getUsable() {
 		System.out.println("Loooking for usables...");
-		for(int i = 0; i < ServerData.world.ships[shipid].objects.size(); i ++){
-			if(ServerData.world.ships[shipid].objects.get(i) instanceof Usable) {
+		for(int i = 0; i < ServerData.world.ships[shipid].objects.length; i ++){
+			if(ServerData.world.ships[shipid].objects[i]!= null && ServerData.world.ships[shipid].objects[i] instanceof Usable) {
 				System.out.println("Found a usable!");
-				if(ServerData.world.ships[shipid].objects.get(i).pos.distance(this.pos) < 32) return (Usable) ServerData.world.ships[shipid].objects.get(i);
+				if(ServerData.world.ships[shipid].objects[i].pos.distance(this.pos) < 32) return (Usable) ServerData.world.ships[shipid].objects[i];
 			}
 		}
 		return null;

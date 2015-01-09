@@ -1,10 +1,6 @@
 package com.complover116.quar2;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
-
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 public class ServerFunctions {
 
@@ -64,5 +60,6 @@ public class ServerFunctions {
 						ServerThread.sendBytes(out);
 				}
 			}
+		// SEND THE SHIPJECTS
 	}
 }

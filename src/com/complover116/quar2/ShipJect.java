@@ -12,6 +12,7 @@ public abstract class ShipJect implements Serializable {
 	public Pos pos = new Pos();
 	public double rot;
 	public Ship ship;
+	public byte id = -1;
 	public ShipJect(Ship sh, double x, double y, double rot){
 		this.ship = sh;
 		this.pos.x = x;

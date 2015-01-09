@@ -83,9 +83,9 @@ public class ShipPresets {
 		sh.hull[30][1] = new Hull(3);
 		sh.hull[30][0] = new Hull(3);
 		sh.calcMass();
-		sh.objects.add(new EnginesPanel(sh, 896,64,0));
-		sh.objects.add(new Engine(sh, 928,64,0, (byte) 2));
-		sh.objects.add(new Engine(sh, -64,64,0, (byte) 1));
-		sh.objects.add(new Engine(sh, -64,384,0, (byte) 1));
+		sh.registerShipJect(new EnginesPanel(sh, 896,64,0));
+		sh.registerShipJect(new Engine(sh, 928,64,0, (byte) 2));
+		sh.registerShipJect(new Engine(sh, -64,64,0, (byte) 1));
+		sh.registerShipJect(new Engine(sh, -64,384,0, (byte) 1));
 	}
 }
