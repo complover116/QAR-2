@@ -11,6 +11,7 @@ public class Ship implements Serializable{
 	 */
 	private static final long serialVersionUID = 6330349971680345419L;
 	public World world = null;
+	public byte id;
 	public Hull[][] hull = new Hull[256][256];
 	public double x;
 	public double y;
@@ -25,12 +26,12 @@ public class Ship implements Serializable{
 	public double thrustY = 0;
 	public double thrustRot = 0;
 	public ShipJect objects[] = new ShipJect[256];
-	public Ship(double x, double y, double rot, World world) {
+	public Ship(double x, double y, double rot, World world, byte id) {
 		this.world = world;
 		this.x = x;
 		this.y = y;
 		this.rot = rot;
-		
+		this.id = id;
 	}
 	public void tick() {
 		velRot *= 0.995;
@@ -131,9 +132,13 @@ public class Ship implements Serializable{
 		return -1;
 	}
 	public boolean registerShipJect(ShipJect obj, byte id) {
-		if(objects[id] == null) return false;
+		if(objects[id] != null) {
+			System.err.println("Failed to register a ShipJect: id "+id+" is already taken!");
+			return false;
+		}
 		objects[id] = obj;
 		obj.id = id;
+		System.out.println("Registered a ShipJect: id "+id);
 		return true;
 	}
 }

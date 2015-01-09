@@ -9,7 +9,7 @@ public class ClientFunctions {
 	public static void receiveShipData(byte[] in) {
 		if (ClientData.world.ships[in[1]] == null) {
 			System.out.println("CLIENT: CREATING SHIP, ID:"+in[1]);
-			ClientData.world.ships[in[1]] = new Ship(0,0,0, ClientData.world);
+			ClientData.world.ships[in[1]] = new Ship(0,0,0, ClientData.world, in[1]);
 			//REQUEST SHIP STRUCTURE
 			byte out[] = new byte[64];
 			out[0] = 10;
@@ -55,6 +55,28 @@ public class ClientFunctions {
 		ByteBuffer.wrap(in,4,60).get(hullInfo);
 		ClientData.world.ships[in[1]].hull[in[2]][in[3]] = new Hull(hullInfo);
 		ClientData.world.ships[in[1]].calcMass();
+	}
+	public static void receiveShipJect(byte[] in) {
+		ShipJect obj = null;
+		ByteBuffer b = ByteBuffer.wrap(in, 4, 60);
+		switch(in[2]) {
+		case 1:
+			obj = new EnginesPanel(ClientData.world.ships[in[1]], b.getDouble(), b.getDouble(), b.getDouble());
+			System.out.println("Received an EnginesPanel");
+		break;
+		case 2:
+			obj = new Engine(ClientData.world.ships[in[1]], b.getDouble(), b.getDouble(), b.getDouble(), b.get());
+			System.out.println("Received an Engine");
+		break;
+		default:
+			System.err.println("ERROR: Incorrect ShipJect id "+in[2]+"! (This is bad, probably means server's and client's versions differ)");
+		return;
+		}
+		if(ClientData.world.ships[in[1]] == null) {
+			System.err.println("WARNING: Invalid ship id "+in[1]);
+			return;
+		}
+		ClientData.world.ships[in[1]].registerShipJect(obj, in[3]);
 	}
 
 }

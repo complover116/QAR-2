@@ -24,9 +24,10 @@ public class ServerThread implements Runnable {
 
 	@Override
 	public void run() {
+		try{
 		Loader.initialized = true;
 		System.out.println("Server Thread is running");
-		new Thread(new MessageDispatchThread()).start();
+		new Thread(new MessageDispatchThread(), "MDT").start();
 		while (true) {
 			byte in[] = new byte[64];
 			DatagramPacket incoming = new DatagramPacket(in, in.length);
@@ -116,20 +117,19 @@ public class ServerThread implements Runnable {
 				}
 			} catch (IOException e1) {
 				if(!e1.getMessage().equalsIgnoreCase("full"))
-				e1.printStackTrace();
+				throw new Exception();
 			}
-			try {
 				Thread.sleep(Config.netTick);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		}
+		}catch(Exception e) {
+			e.printStackTrace();
+			SoundHandler.playSound("/sound/effects/error1.wav");
+			JOptionPane.showMessageDialog(null, "ServerThread has failed, system can not recover.\nShutting down...", "FATAL ERROR", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
 		}
 	}
 
-	public static void sendData() {
-		
-	}
+	
 
 	public static void sendBytesOld(byte[] out) {
 		for (int i = 0; i < clients.size(); i++) {

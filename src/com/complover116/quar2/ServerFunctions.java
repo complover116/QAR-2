@@ -61,5 +61,34 @@ public class ServerFunctions {
 				}
 			}
 		// SEND THE SHIPJECTS
+		for(int i = 0; i < sh.objects.length; i ++) {
+			if(sh.objects[i] != null)
+				ServerFunctions.sendShipJect(sh.objects[i]);
+		}
+	}
+	public static void sendShipJect(ShipJect obj) {
+		byte out[] = new byte[64];
+		out[0] = 11;
+		out[1] = obj.ship.id;
+		out[3] = obj.id;
+		ByteBuffer b = ByteBuffer.wrap(out, 4,60);
+		if(obj.getClass() == EnginesPanel.class){
+			out[2] = 1;
+			b.putDouble(obj.pos.x);
+			b.putDouble(obj.pos.y);
+			b.putDouble(obj.rot);
+		}
+		else if(obj.getClass() == Engine.class){
+			out[2] = 2;
+			b.putDouble(obj.pos.x);
+			b.putDouble(obj.pos.y);
+			b.putDouble(obj.rot);
+			b.put(((Engine)obj).direction);
+		}
+		else {
+			System.err.println("ERROR: Undefined ShipJect type "+obj.getClass()+"! (This is bad, register this type RIGHT NOW!)");
+			return;
+		}
+		ServerThread.sendBytes(out);
 	}
 }

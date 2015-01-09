@@ -49,6 +49,7 @@ public class ClientThread implements Runnable {
 	}
 	@Override
 	public void run() {
+		try{
 		System.out.println("Client Networking Thread has started...");
 		try {
 			Thread.sleep(1000);
@@ -84,7 +85,7 @@ public class ClientThread implements Runnable {
 			System.exit(0);
 		}
 		System.out.println("Client Networking Thread has entered loopmode");
-		new Thread(new TimeoutThread()).start();
+		new Thread(new TimeoutThread(), "Timeout Thread").start();
 		while(ClientData.run) {
 			byte in[] = new byte[64];
 			DatagramPacket incoming = new DatagramPacket(in, in.length);
@@ -104,6 +105,9 @@ public class ClientThread implements Runnable {
 				case 10:
 					ClientFunctions.receiveShip(in);
 				break;
+				case 11:
+					ClientFunctions.receiveShipJect(in);
+				break;
 				case -1:
 					System.out.println("SpaapS");
 					ClientData.world.players[in[1]] = new Player(ClientData.world, 0, 0);
@@ -121,6 +125,12 @@ public class ClientThread implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}catch(Exception e) {
+		e.printStackTrace();
+		SoundHandler.playSound("/sound/effects/error1.wav");
+		JOptionPane.showMessageDialog(null, "ClientThread has failed, system can not recover.\nShutting down...", "FATAL ERROR", JOptionPane.ERROR_MESSAGE);
+		System.exit(0);
+	}
 		System.out.println("Client Networking Thread has stopped");
 	}
 	public static void sendKey(int key, boolean state) {

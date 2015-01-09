@@ -14,7 +14,7 @@ public class Loader {
 		System.out.println("...SOS...");
 		String in = GUI.askString("Connection setup", "To join a game, type an ip address. To host one, type \"host\"");
 		Render.loadStep = "Loading resources...";
-		new Thread(new ClientTickerThread()).start();
+		new Thread(new ClientTickerThread(), "Client Ticker Thread").start();
 		ResourceContainer.load();
 		while(!initialized) {
 			try {
@@ -27,7 +27,7 @@ public class Loader {
 		initialized = false;
 		if(in.equalsIgnoreCase("host")) {
 			Render.loadStep = "Hosting a game...";
-			new Thread(new ServerThread()).start();
+			new Thread(new ServerThread(), "Server Thread").start();
 			isServer = true;
 			ServerData.world.isRemote = false;
 			while(!initialized) {
@@ -39,12 +39,12 @@ public class Loader {
 				}
 			}
 			initialized = false;
-			ServerData.world.ships[5] = new Ship(400,500,0,ServerData.world);
+			ServerData.world.ships[5] = new Ship(400,500,0,ServerData.world, (byte) 5);
 			ServerData.world.ships[5].velX = 0;
 			ServerData.world.ships[5].velRot = 0;
 			ShipPresets.loadDefault(ServerData.world.ships[5]);
 			SoundHandler.playSound("/sound/effects/blip1.wav");
-			new Thread(new TickerThread()).start();
+			new Thread(new TickerThread(), "Ticker Thread").start();
 			Config.address = "localhost";
 		} else {
 			Config.address = in;
@@ -55,7 +55,7 @@ public class Loader {
 			try{
 			
 			Config.server = InetAddress.getByName(Config.address);
-			new Thread(new ClientThread()).start();
+			new Thread(new ClientThread(), "Client Thread").start();
 			while(!initialized) {
 				Render.loadspeed+=0.25;
 				try {
