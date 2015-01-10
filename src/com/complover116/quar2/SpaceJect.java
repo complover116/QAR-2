@@ -6,12 +6,14 @@ import java.nio.ByteBuffer;
 public abstract class SpaceJect {
 	public Pos pos = new Pos();
 	public World world;
+	public byte id;
 	public abstract void draw(Graphics2D g2d);
 	public abstract void tick();
-	public SpaceJect(double x, double y, World world) {
+	public SpaceJect(double x, double y, World world, byte id) {
 		pos.x = x;
 		pos.y = y;
 		this.world = world;
+		this.id = id;
 	}
 	public void downDate(ByteBuffer b){
 		b.putDouble(pos.x);

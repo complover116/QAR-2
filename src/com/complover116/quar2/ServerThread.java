@@ -109,6 +109,9 @@ public class ServerThread implements Runnable {
 				if(in[0] == 3) {
 					ServerFunctions.sendPlayerInfo(ServerData.world.players[in[1]], in[1]);
 				}
+				if(in[0] == 5) {
+					ServerFunctions.sendObjectInfo(ServerData.world.objects[in[1]]);
+				}
 				if(in[0] == 1) {
 					if(in[1] == 1)
 					ServerData.world.players[in[2]].keyPress(in);

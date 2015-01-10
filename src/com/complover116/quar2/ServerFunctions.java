@@ -100,4 +100,22 @@ public class ServerFunctions {
 		spaceJect.downDate(data);
 		ServerThread.sendBytes(out);
 	}
+	public static void sendObjectInfo(SpaceJect obj) {
+		//STEP 1 - METADATA
+		byte out[] = new byte[64];
+		out[0] = 5;
+		out[1] = obj.id;
+		
+		//STEP 2 - OBJECT TYPE
+		if(obj.getClass() == Projectile.class){
+			out[2] = 1;
+		}
+		else {
+			System.err.println("ERROR: Undefined ShipJect type "+obj.getClass()+"! (This is bad, register this type RIGHT NOW!)");
+			return;
+		}
+		//STEP 3 - INFO
+		obj.infoDown(ByteBuffer.wrap(out, 3,61));
+		ServerThread.sendBytes(out);
+	}
 }

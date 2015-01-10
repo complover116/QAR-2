@@ -80,14 +80,9 @@ public class ClientFunctions {
 	}
 	public static void receiveSpaceJectData(byte[] in) {
 		if (ClientData.world.objects[in[1]] == null) {
-			System.out.println("CLIENT: CREATING SPACEJECT, ID:"+in[1]);
-			Pos pos = new Pos(ByteBuffer.wrap(in, 2, 62));
 			
-			//HERE WE SHOULD REQUEST SPACEJECT INFO
-			ClientData.world.objects[in[1]] = new Projectile(pos.x, pos.y, ClientData.world);
-			//BUT FOR NOW, LET's ASSUME IT'S A PROJECTILE
-			/*byte out[] = new byte[64];
-			out[0] = 3;
+			byte out[] = new byte[64];
+			out[0] = 5;
 			out[1] = in[1];
 			DatagramPacket outgoing = new DatagramPacket(out, out.length,
 					Config.server, 1141);
@@ -96,9 +91,28 @@ public class ClientFunctions {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}*/
-		}
+			}
+		} else
 		ClientData.world.objects[in[1]].upDate(ByteBuffer.wrap(in, 2, 62));
+	}
+	public static void receiveSpaceJectInfo(byte[] in) {
+		SpaceJect obj = null;
+		//STEP 1 - GET THE TYPE
+		switch(in[2]) {
+		case 1:
+			//ZEROES ARE HERE TO SAVE 16 BYTES OF DATA!
+			obj = new Projectile(0,0,ClientData.world,in[1]);
+			System.out.println("Received a Projectile");
+		break;
+		default:
+			System.err.println("ERROR: Incorrect SpaceJect id "+in[2]+"! (This is bad, probably means server's and client's versions differ)");
+		return;
+		}
+		//STEP 2 - CREATE IT
+		System.out.println("CLIENT: CREATING SPACEJECT, ID:"+in[1]);
+		ClientData.world.objects[in[1]] = obj;
+		//STEP 3 - GET THE INFO
+		obj.infoUp(ByteBuffer.wrap(in, 3, 61));
 	}
 
 }

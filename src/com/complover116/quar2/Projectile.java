@@ -5,9 +5,10 @@ import java.awt.Graphics2D;
 import java.nio.ByteBuffer;
 
 public class Projectile extends SpaceJect {
-
-	public Projectile(double x, double y, World world) {
-		super(x, y, world);
+	public double velX;
+	public double velY;
+	public Projectile(double x, double y, World world, byte id) {
+		super(x, y, world, id);
 		// TODO Auto-generated constructor stub
 	}
 
