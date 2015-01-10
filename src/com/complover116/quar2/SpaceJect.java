@@ -34,12 +34,12 @@ public abstract class SpaceJect {
 	 */
 	public abstract void dataUp(ByteBuffer b);
 	/***
-	 * There is 62 bytes of permanent data available for sending only one time
+	 * There is 61 bytes of permanent data available for sending only one time
 	 * @param b Data is to be put here
 	 */
 	public abstract void infoDown(ByteBuffer b);
 	/***
-	 * There is 62 bytes of permanent data available for receiving only one time
+	 * There is 61 bytes of permanent data available for receiving only one time
 	 * @param b Data is to be received from here
 	 */
 	public abstract void infoUp(ByteBuffer b);
