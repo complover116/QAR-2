@@ -33,6 +33,15 @@ public class Ship implements Serializable{
 		this.rot = rot;
 		this.id = id;
 	}
+	/***
+	 * THIS FUNCTION IS SERVER ONLY!!!
+	 */
+	public void damageHull(byte x, byte y) {
+		//STEP 1 - DO THE DAMAGE
+		this.hull[x][y] = null;
+		//STEP 2 - SEND HULL UPDATES
+		ServerFunctions.sendHullBlockStatus(this, x, y);
+	}
 	public void tick() {
 		velRot *= 0.995;
 		this.x += velX;
@@ -103,6 +112,20 @@ public class Ship implements Serializable{
 		double relx = Math.cos(Math.toRadians(deg-90))*distance;
 		double rely = Math.sin(Math.toRadians(deg-90))*distance;
 		return new double[]{relx,rely};
+	}
+	public double[] realtransform(double x, double y) {
+		//Get current degAndD
+				double deltaX = x - massX;
+				double deltaY = y - massY;
+				double deg = Math.atan2(deltaX, deltaY);
+				double distance = Math.sqrt(deltaX*deltaX+deltaY*deltaY);
+				deg = Math.toDegrees(deg);
+				//Change it
+				deg += rot;
+				//And convert back
+				double relx = massX + Math.cos(Math.toRadians(deg-90))*distance;
+				double rely = massX + Math.sin(Math.toRadians(deg-90))*distance;
+				return new double[]{relx+this.x,rely+this.y};
 	}
 	public void draw(Graphics2D g2d) {
 		for(int i = 0; i < 256; i ++)

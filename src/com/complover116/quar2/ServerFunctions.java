@@ -66,6 +66,20 @@ public class ServerFunctions {
 				ServerFunctions.sendShipJect(sh.objects[i]);
 		}
 	}
+	public static void sendHullBlockStatus(Ship sh, byte x, byte y) {
+		byte out[] = new byte[64];
+		out[0] = -10;
+		out[1] = (byte) sh.id;
+		out[2] = (byte) x;
+		out[3] = (byte) y;
+		ByteBuffer data = ByteBuffer.wrap(out, 4, 60);
+		try{
+			data.put(sh.hull[x][y].downDate());
+		}catch (NullPointerException e) {
+			data.put((byte) -255);
+		}
+		ServerThread.sendBytes(out);
+	}
 	public static void sendShipJect(ShipJect obj) {
 		byte out[] = new byte[64];
 		out[0] = 11;
@@ -96,8 +110,12 @@ public class ServerFunctions {
 		byte out[] = new byte[64];
 		out[0] = 4;
 		out[1] = (byte) i;
+		if(spaceJect.dead){
+			out[2] = (byte) -127;
+		} else {
 		ByteBuffer data = ByteBuffer.wrap(out, 2, 62);
 		spaceJect.downDate(data);
+		}
 		ServerThread.sendBytes(out);
 	}
 	public static void sendObjectInfo(SpaceJect obj) {

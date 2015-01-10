@@ -19,7 +19,12 @@ public class World implements Serializable {
 			if(players[i] != null)players[i].tick();
 		}
 		for(int i = 0; i < objects.length; i ++) {
-			if(objects[i] != null)objects[i].tick();
+			if(objects[i] != null){
+				if(objects[i].dead){
+					objects[i] = null;
+				} else
+				objects[i].tick();
+			}
 		}
 	}
 }

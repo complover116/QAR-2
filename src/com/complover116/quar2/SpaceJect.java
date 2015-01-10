@@ -7,6 +7,7 @@ public abstract class SpaceJect {
 	public Pos pos = new Pos();
 	public World world;
 	public byte id;
+	public boolean dead = false;
 	public abstract void draw(Graphics2D g2d);
 	public abstract void tick();
 	public SpaceJect(double x, double y, World world, byte id) {

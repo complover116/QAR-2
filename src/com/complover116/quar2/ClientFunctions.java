@@ -92,8 +92,14 @@ public class ClientFunctions {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else
-		ClientData.world.objects[in[1]].upDate(ByteBuffer.wrap(in, 2, 62));
+		} else {
+			if(in[2] == -127){
+				ClientData.world.objects[in[1]].dead = true;
+				ClientData.world.objects[in[1]] = null;
+			} else {
+				ClientData.world.objects[in[1]].upDate(ByteBuffer.wrap(in, 2, 62));
+			}
+		}
 	}
 	public static void receiveSpaceJectInfo(byte[] in) {
 		SpaceJect obj = null;
@@ -113,6 +119,16 @@ public class ClientFunctions {
 		ClientData.world.objects[in[1]] = obj;
 		//STEP 3 - GET THE INFO
 		obj.infoUp(ByteBuffer.wrap(in, 3, 61));
+	}
+	public static void receiveHull(byte[] in) {
+		if(in[4] == -255){
+			ClientData.world.ships[in[1]].hull[in[2]][in[3]] = null;
+		} else {
+			byte hullInfo[] = new byte[60];
+			ByteBuffer.wrap(in,4,60).get(hullInfo);
+			ClientData.world.ships[in[1]].hull[in[2]][in[3]] = new Hull(hullInfo);
+		}
+		ClientData.world.ships[in[1]].calcMass();
 	}
 
 }
