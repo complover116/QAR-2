@@ -93,6 +93,11 @@ public class Render extends JPanel implements KeyListener {
 					ClientData.world.players[i].draw(g2d);
 				}
 			}
+			for(int i = 0; i < Config.maxObjects; i ++) {
+				if(ClientData.world.objects[i] != null) {
+					ClientData.world.objects[i].draw(g2d);
+				}
+			}
 			//CAMERA DISPOSITIONING
 			g2d.transform(transform.createInverse());
 			//HUD RENDERING

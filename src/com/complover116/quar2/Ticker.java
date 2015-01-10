@@ -15,13 +15,21 @@ public class Ticker {
 			}
 		}
 		//SENDING PLAYER INFO
-		for(int i = 0; i < 2; i ++) {
+		for(int i = 0; i < Config.maxPlayers; i ++) {
 			//IF IT EXISTS
 			if(ServerData.world.players[i] != null) {
 				//SEND IT
 				ServerFunctions.sendPlayerPos(ServerData.world.players[i], i);
 			}
 		}
+		//SENDING OBJECT INFO
+				for(int i = 0; i < Config.maxObjects; i ++) {
+					//IF IT EXISTS
+					if(ServerData.world.objects[i] != null) {
+						//SEND IT
+						ServerFunctions.sendObjectData(ServerData.world.objects[i], i);
+					}
+				}
 		ticktime = 0;
 		}
 		ticktime ++;

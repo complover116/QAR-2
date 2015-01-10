@@ -78,5 +78,27 @@ public class ClientFunctions {
 		}
 		ClientData.world.ships[in[1]].registerShipJect(obj, in[3]);
 	}
+	public static void receiveSpaceJectData(byte[] in) {
+		if (ClientData.world.objects[in[1]] == null) {
+			System.out.println("CLIENT: CREATING SPACEJECT, ID:"+in[1]);
+			Pos pos = new Pos(ByteBuffer.wrap(in, 2, 62));
+			
+			//HERE WE SHOULD REQUEST SPACEJECT INFO
+			ClientData.world.objects[in[1]] = new Projectile(pos.x, pos.y, ClientData.world);
+			//BUT FOR NOW, LET's ASSUME IT'S A PROJECTILE
+			/*byte out[] = new byte[64];
+			out[0] = 3;
+			out[1] = in[1];
+			DatagramPacket outgoing = new DatagramPacket(out, out.length,
+					Config.server, 1141);
+			try {
+				ClientThread.socket.send(outgoing);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+		}
+		ClientData.world.objects[in[1]].upDate(ByteBuffer.wrap(in, 2, 62));
+	}
 
 }

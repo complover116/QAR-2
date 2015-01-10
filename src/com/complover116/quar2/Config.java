@@ -9,4 +9,5 @@ public class Config {
 	public static final int maxShips = 50;
 	public static final int maxPlayers = 2;
 	public static final int tickdelay = 20;
+	public static final int maxObjects = 50;
 }

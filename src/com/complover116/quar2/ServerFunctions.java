@@ -91,4 +91,13 @@ public class ServerFunctions {
 		}
 		ServerThread.sendBytes(out);
 	}
+
+	public static void sendObjectData(SpaceJect spaceJect, int i) {
+		byte out[] = new byte[64];
+		out[0] = 4;
+		out[1] = (byte) i;
+		ByteBuffer data = ByteBuffer.wrap(out, 2, 62);
+		spaceJect.downDate(data);
+		ServerThread.sendBytes(out);
+	}
 }
