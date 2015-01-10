@@ -128,8 +128,11 @@ public class ServerFunctions {
 		if(obj.getClass() == Projectile.class){
 			out[2] = 1;
 		}
+		else if(obj.getClass() == Particle.class){
+			out[2] = 2;
+		}
 		else {
-			System.err.println("ERROR: Undefined ShipJect type "+obj.getClass()+"! (This is bad, register this type RIGHT NOW!)");
+			System.err.println("ERROR: Undefined SpaceJect type "+obj.getClass()+"! (This is bad, register this type RIGHT NOW!)");
 			return;
 		}
 		//STEP 3 - INFO

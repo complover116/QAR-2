@@ -39,7 +39,9 @@ public class Loader {
 				}
 			}
 			initialized = false;
-			ServerData.world.objects[2] = new Projectile(200,200,ServerData.world,(byte)2);
+			for(byte i = 0; i <10; i ++){
+			ServerData.world.objects[i] = new Projectile(2000,1800+Math.random()*400,ServerData.world,(byte)i, -5,-5);
+			}
 			ServerData.world.ships[5] = new Ship(400,500,0,ServerData.world, (byte) 5);
 			ServerData.world.ships[5].velX = 0;
 			ServerData.world.ships[5].velRot = 0;

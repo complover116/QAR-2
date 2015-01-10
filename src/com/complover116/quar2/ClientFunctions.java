@@ -107,8 +107,13 @@ public class ClientFunctions {
 		switch(in[2]) {
 		case 1:
 			//ZEROES ARE HERE TO SAVE 16 BYTES OF DATA!
-			obj = new Projectile(0,0,ClientData.world,in[1]);
+			obj = new Projectile(0,0,ClientData.world,in[1],0,0);
 			System.out.println("Received a Projectile");
+		break;
+		case 2:
+			//ZEROES ARE HERE TO SAVE 16 BYTES OF DATA!
+			obj = new Particle(0,0,ClientData.world,in[1]);
+			System.out.println("Received a Particle");
 		break;
 		default:
 			System.err.println("ERROR: Incorrect SpaceJect id "+in[2]+"! (This is bad, probably means server's and client's versions differ)");

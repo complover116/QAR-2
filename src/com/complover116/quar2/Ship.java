@@ -1,5 +1,6 @@
 package com.complover116.quar2;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
@@ -41,6 +42,11 @@ public class Ship implements Serializable{
 		this.hull[x][y] = null;
 		//STEP 2 - SEND HULL UPDATES
 		ServerFunctions.sendHullBlockStatus(this, x, y);
+		//STEP 3 - MAKE PARTICLES!
+		double[] res = this.realtransform(x*32+16, y*32+16);
+		for(int z = 0; z < 10; z ++) {
+			ServerData.world.regObject(new Particle(res[0], res[1], ServerData.world, new Color(155,155,155)));
+		}
 	}
 	public void tick() {
 		velRot *= 0.995;

@@ -11,6 +11,17 @@ public class World implements Serializable {
 	public Ship[] ships = new Ship[Config.maxShips];
 	public SpaceJect[] objects = new SpaceJect[Config.maxObjects];
 	public Player[] players = new Player[Config.maxPlayers];
+	
+	public void regObject(SpaceJect obj) {
+		for(byte i = 0; i < Config.maxObjects; i ++) {
+			if(objects[i] == null) {
+				objects[i] = obj;
+				obj.id = i;
+				return;
+			}
+		}
+		System.err.println("UH-OH! Out of object slots! WE'RE GOING TO CRASH!!!");
+	}
 	public void tick() {
 		for(int i = 0; i < ships.length; i ++) {
 			if(ships[i] != null)ships[i].tick();

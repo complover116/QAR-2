@@ -10,15 +10,17 @@ public class Projectile extends SpaceJect {
 	public double targetX;
 	public double targetY;
 	
-	public Projectile(double x, double y, World world, byte id) {
+	public Projectile(double x, double y, World world, byte id, double velX, double velY) {
 		super(x, y, world, id);
+		this.velX = velX;
+		this.velY = velY;
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void draw(Graphics2D g2d) {
 		g2d.setColor(new Color(255, (int)(Math.random()*255), 0));
-		g2d.fillRect((int)pos.x-6, (int)pos.y-6, 12, 12);
+		g2d.fillRect((int)pos.x-12, (int)pos.y-12, 24, 24);
 		g2d.drawRect((int)targetX, (int)targetY, 5, 5);
 	}
 
@@ -48,6 +50,10 @@ public class Projectile extends SpaceJect {
 									ServerData.world.ships[i].damageHull(x, y);
 									//y = (byte) 255;
 									//x = (byte) 255;
+									//STEP 3 - MAKE PARTICLES!
+									for(int z = 0; z < 5; z ++) {
+										ServerData.world.regObject(new Particle(this.pos.x, this.pos.y, ServerData.world, new Color(255,155,0)));
+									}
 								}
 							}
 						}
