@@ -135,5 +135,40 @@ public class ClientFunctions {
 		}
 		ClientData.world.ships[in[1]].calcMass();
 	}
+	public static void playSound(byte[] in) {
+		
+		ByteBuffer b = ByteBuffer.wrap(in);
+		b.get();
+		int sound = b.getInt();
+		boolean surface = b.get() == 1;
+		
+		
+		String soundName = "";
+		switch(sound) {
+		case 1:
+			soundName = "/sound/effects/explosions/hullboom_1.wav";
+		break;
+		case 2:
+		break;
+		case 3:
+		break;
+		default:
+			System.err.println("WARNING: Unregistered soundID "+sound);
+		}
+if(!surface) {
+	System.out.println("Playing positioned sound:"+soundName);
+	float gain = 0;
+	float pan = 0;
+	double x = b.getDouble();
+	double y = b.getDouble();
+	double res[] = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
+	gain = 0 - ((float) new Pos(x,y).distance(new Pos(res[0], res[1])));
+	SoundHandler.playModSound(soundName, 1f,gain);
+		} else {
+			System.out.println("Playing surface sound:"+soundName);
+			SoundHandler.playSound(soundName);
+		}
+		
+	}
 
 }

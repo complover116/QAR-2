@@ -117,6 +117,9 @@ public class ClientThread implements Runnable {
 				case 11:
 					ClientFunctions.receiveShipJect(in);
 				break;
+				case -25:
+					ClientFunctions.playSound(in);
+				break;
 				case -1:
 					System.out.println("SpaapS");
 					ClientData.world.players[in[1]] = new Player(ClientData.world, 0, 0);
