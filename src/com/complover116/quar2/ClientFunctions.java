@@ -110,14 +110,14 @@ public class ClientFunctions {
 			//WAT
 			//CAN'T REMEMBER WHY
 			obj = new Projectile(0,0,ClientData.world,in[1],0,0);
-			System.out.println("Received a Projectile");
+			//System.out.println("Received a Projectile");
 		break;
 		default:
 			System.err.println("ERROR: Incorrect SpaceJect id "+in[2]+"! (This is bad, probably means server's and client's versions differ)");
 		return;
 		}
 		//STEP 2 - CREATE IT
-		System.out.println("CLIENT: CREATING SPACEJECT, ID:"+in[1]);
+		//System.out.println("CLIENT: CREATING SPACEJECT, ID:"+in[1]);
 		ClientData.world.objects[in[1]] = obj;
 		//STEP 3 - GET THE INFO
 		obj.infoUp(ByteBuffer.wrap(in, 3, 61));
@@ -134,14 +134,14 @@ public class ClientFunctions {
 			//WAT
 			//CAN'T REMEMBER WHY
 			obj = new Particle(0,0,ClientData.world,in[1]);
-			System.out.println("Received a Particle");
+			//System.out.println("Received a Particle");
 		break;
 		default:
 			System.err.println("ERROR: Incorrect CLIE id "+in[2]+"! (This is bad, probably means server's and client's versions differ)");
 		return;
 		}
 		//STEP 2 - CREATE IT
-		System.out.println("CLIENT: CREATING CLIE, ID:"+in[1]);
+		//System.out.println("CLIENT: CREATING CLIE, ID:"+in[1]);
 		ClientData.cl_ents.add(obj);
 		//STEP 3 - GET THE INFO
 		obj.infoUp(ByteBuffer.wrap(in, 3, 61));

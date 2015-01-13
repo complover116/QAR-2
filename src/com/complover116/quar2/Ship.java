@@ -92,7 +92,7 @@ public class Ship implements Serializable{
 				}
 		massX = divingX / diver;
 		massY = (divingY / diver) - 32;
-		System.out.println("("+massX+";"+massY+")");
+		//System.out.println("("+massX+";"+massY+")");
 	}
 	public double[] transform(double x, double y) {
 		//Get current degAndD
