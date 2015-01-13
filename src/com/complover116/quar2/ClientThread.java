@@ -108,6 +108,9 @@ public class ClientThread implements Runnable {
 				case 5:
 					ClientFunctions.receiveSpaceJectInfo(in);
 				break;
+				case 6:
+					ClientFunctions.receiveCLIEInfo(in);
+				break;
 				case 10:
 					ClientFunctions.receiveShip(in);
 				break;

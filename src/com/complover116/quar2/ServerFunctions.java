@@ -128,11 +128,28 @@ public class ServerFunctions {
 		if(obj.getClass() == Projectile.class){
 			out[2] = 1;
 		}
-		else if(obj.getClass() == Particle.class){
-			out[2] = 2;
-		}
 		else {
 			System.err.println("ERROR: Undefined SpaceJect type "+obj.getClass()+"! (This is bad, register this type RIGHT NOW!)");
+			return;
+		}
+		//STEP 3 - INFO
+		obj.infoDown(ByteBuffer.wrap(out, 3,61));
+		ServerThread.sendBytes(out);
+	}
+	public static void sendClientSideObjectInfo(ClientSideEnt obj) {
+		//STEP 1 - METADATA
+		byte out[] = new byte[64];
+		out[0] = 6;
+		//THAT IS ACTUALLY NOT NEEDED
+		//TODO: Save 1 byte of data!
+		out[1] = obj.id;
+		
+		//STEP 2 - OBJECT TYPE
+		if(obj.getClass() == Particle.class){
+			out[2] = 1;
+		}
+		else {
+			System.err.println("ERROR: Undefined ClientSideEnt type "+obj.getClass()+"! (This is bad, register this type RIGHT NOW!)");
 			return;
 		}
 		//STEP 3 - INFO

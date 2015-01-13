@@ -45,7 +45,7 @@ public class Ship implements Serializable{
 		//STEP 3 - MAKE PARTICLES!
 		double[] res = this.realtransform(x*32+16, y*32+16);
 		for(int z = 0; z < 10; z ++) {
-			ServerData.world.regObject(new Particle(res[0], res[1], ServerData.world, new Color(155,155,155)));
+			ServerFunctions.sendClientSideObjectInfo(new Particle(res[0], res[1], ServerData.world, new Color(155,155,155)));
 		}
 		ServerSoundHandler.playPositionedSound("/sound/effects/explosions/hullboom_1.wav", res[0], res[1]);
 	}

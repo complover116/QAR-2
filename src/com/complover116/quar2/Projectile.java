@@ -52,7 +52,7 @@ public class Projectile extends SpaceJect {
 									//x = (byte) 255;
 									//STEP 3 - MAKE PARTICLES!
 									for(int z = 0; z < 5; z ++) {
-										ServerData.world.regObject(new Particle(this.pos.x, this.pos.y, ServerData.world, new Color(255,155,0)));
+										ServerFunctions.sendClientSideObjectInfo(new Particle(this.pos.x, this.pos.y, ServerData.world, new Color(255,155,0)));
 									}
 								}
 							}
@@ -75,8 +75,7 @@ public class Projectile extends SpaceJect {
 
 	@Override
 	public void infoDown(ByteBuffer b) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub bububbu
 	}
 
 	@Override

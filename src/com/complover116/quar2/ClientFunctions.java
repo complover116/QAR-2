@@ -107,13 +107,10 @@ public class ClientFunctions {
 		switch(in[2]) {
 		case 1:
 			//ZEROES ARE HERE TO SAVE 16 BYTES OF DATA!
+			//WAT
+			//CAN'T REMEMBER WHY
 			obj = new Projectile(0,0,ClientData.world,in[1],0,0);
 			System.out.println("Received a Projectile");
-		break;
-		case 2:
-			//ZEROES ARE HERE TO SAVE 16 BYTES OF DATA!
-			obj = new Particle(0,0,ClientData.world,in[1]);
-			System.out.println("Received a Particle");
 		break;
 		default:
 			System.err.println("ERROR: Incorrect SpaceJect id "+in[2]+"! (This is bad, probably means server's and client's versions differ)");
@@ -122,6 +119,30 @@ public class ClientFunctions {
 		//STEP 2 - CREATE IT
 		System.out.println("CLIENT: CREATING SPACEJECT, ID:"+in[1]);
 		ClientData.world.objects[in[1]] = obj;
+		//STEP 3 - GET THE INFO
+		obj.infoUp(ByteBuffer.wrap(in, 3, 61));
+	}
+	//THAt's A DUMB NAME
+	//BUT I'LL LIVE
+	public static void receiveCLIEInfo(byte[] in) {
+		//YOU SET MY SOUL ALIGHT
+		ClientSideEnt obj = null;
+		//STEP 1 - GET THE TYPE
+		switch(in[2]) {
+		case 1:
+			//ZEROES ARE HERE TO SAVE 16 BYTES OF DATA!
+			//WAT
+			//CAN'T REMEMBER WHY
+			obj = new Particle(0,0,ClientData.world,in[1]);
+			System.out.println("Received a Particle");
+		break;
+		default:
+			System.err.println("ERROR: Incorrect CLIE id "+in[2]+"! (This is bad, probably means server's and client's versions differ)");
+		return;
+		}
+		//STEP 2 - CREATE IT
+		System.out.println("CLIENT: CREATING CLIE, ID:"+in[1]);
+		ClientData.cl_ents.add(obj);
 		//STEP 3 - GET THE INFO
 		obj.infoUp(ByteBuffer.wrap(in, 3, 61));
 	}
@@ -158,7 +179,7 @@ public class ClientFunctions {
 if(!surface) {
 	System.out.println("Playing positioned sound:"+soundName);
 	float gain = 0;
-	float pan = 0;
+	//float pan = 0;
 	double x = b.getDouble();
 	double y = b.getDouble();
 	double res[] = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);

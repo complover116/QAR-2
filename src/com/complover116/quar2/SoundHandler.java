@@ -34,10 +34,10 @@ public class SoundHandler {
 				Clip clip = AudioSystem.getClip();
 				clip.open(ResourceContainer.format, ResourceContainer.sounds.get(name), 0, ResourceContainer.sounds.get(name).length);
 				clip.start();
-				if(clip.isControlSupported(FloatControl.Type.PAN))
+				if(clip.isControlSupported(FloatControl.Type.VOLUME))
 		        {
-		            FloatControl pan = (FloatControl) clip.getControl(FloatControl.Type.PAN);
-		            pan.setValue(PAN);
+		            FloatControl pan = (FloatControl) clip.getControl(FloatControl.Type.VOLUME);
+		            pan.setValue(GAIN);
 		        }
 			} catch (LineUnavailableException e) {
 				if(!warned){
