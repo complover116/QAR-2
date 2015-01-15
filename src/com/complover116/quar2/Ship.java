@@ -17,8 +17,7 @@ public class Ship implements Serializable{
 	public double x;
 	public double y;
 	public double rot;
-	public double velX = 0;
-	public double velY = 0;
+	public Pos velocity = new Pos();
 	public double mass = 0;
 	public double velRot = 0;
 	public double massX = 0;
@@ -33,6 +32,37 @@ public class Ship implements Serializable{
 		this.y = y;
 		this.rot = rot;
 		this.id = id;
+	}
+	
+	public void physReact(byte x, byte y, Pos velocity) {
+		double[] res = this.realtransform(x*32+16, y*32+16);
+		physReact(new Pos(res[0], res[1]), velocity);
+	}
+	public void physReact(Pos impactpos, Pos velocity) {
+		//GET PUSHED AWAY
+		//double res[] = this.realtransform(massX, massY);
+		//Pos push = new Pos(res[0], res[1]).sub(impactpos);
+		//this.velocity.addOn(push.normal().mul(10));
+		Pos res = velocity.sub(this.velocity).mul(10/this.mass);
+		//res.mulOn(10);
+		this.velocity.addOn(res);
+		Pos deltaV = velocity.sub(this.velocity);
+		//TURN
+		double O[] = this.realdetransform(massX,massY);
+		Pos o = new Pos(O[0], O[1]);
+		double impact[] = this.realdetransform(impactpos.x,impactpos.y);
+		Pos impos = new Pos(impact[0], impact[1]);
+		//TURN CO-EFF
+		//HERE GOES PHYSICS: https://en.wikipedia.org/wiki/Rotation_around_a_fixed_axis#Kinematics
+		double r = o.distance(impos);
+		double v = deltaV.length();
+		double w = v/(r);
+		double wDeg = Math.toDegrees(w);
+		//double velres[] = this.realdetransform(deltaV.x,deltaV.y);
+		
+		Pos velToTemp = impos.rotate(impos.sub(new Pos(O[0],O[1])).direction()+90);
+		this.velRot += wDeg*velToTemp.normal().y*1000;
+		//System.out.println(wDeg+":"+velToTemp.normal().y);
 	}
 	/***
 	 * THIS FUNCTION IS SERVER ONLY!!!
@@ -51,10 +81,9 @@ public class Ship implements Serializable{
 	}
 	public void tick() {
 		velRot *= 0.995;
-		this.x += velX;
-		this.y += velY;
-		this.velX *= 0.995;
-		this.velY *= 0.995;
+		this.x += velocity.x;
+		this.y += velocity.y;
+		velocity.mulOn(0.995);
 		this.rot += velRot;
 		for(int i =0 ;i <this.objects.length; i ++) if(objects[i] != null) this.objects[i].tick();
 	}
@@ -62,8 +91,8 @@ public class Ship implements Serializable{
 		this.x = data.getDouble();
 		this.y = data.getDouble();
 		this.rot = data.getDouble();
-		this.velX = data.getDouble();
-		this.velY = data.getDouble();
+		velocity.x = data.getDouble();
+		velocity.y = data.getDouble();
 		this.velRot = data.getDouble();
 		this.thrustX = data.getDouble();
 	}
@@ -71,8 +100,8 @@ public class Ship implements Serializable{
 		data.putDouble(x);
 		data.putDouble(y);
 		data.putDouble(rot);
-		data.putDouble(velX);
-		data.putDouble(velY);
+		data.putDouble(velocity.x);
+		data.putDouble(velocity.y);
 		data.putDouble(velRot);
 		data.putDouble(thrustX);
 	}
@@ -134,6 +163,22 @@ public class Ship implements Serializable{
 				double rely = massX + Math.sin(Math.toRadians(deg-90))*distance;
 				return new double[]{relx+this.x,rely+this.y};
 	}
+	public double[] realdetransform(double x, double y) {
+		x-=this.x;
+		y-=this.y;
+		//Get current degAndD
+				double deltaX = x - massX;
+				double deltaY = y - massY;
+				double deg = Math.atan2(deltaX, deltaY);
+				double distance = Math.sqrt(deltaX*deltaX+deltaY*deltaY);
+				deg = Math.toDegrees(deg);
+				//Change it
+				deg += rot;
+				//And convert back
+				double relx = massX + Math.cos(Math.toRadians(deg-90))*distance;
+				double rely = massX + Math.sin(Math.toRadians(deg-90))*distance;
+				return new double[]{relx,rely};
+	}
 	public void draw(Graphics2D g2d) {
 		for(int i = 0; i < 256; i ++)
 			for(int j = 0; j < 256; j ++){
@@ -149,6 +194,8 @@ public class Ship implements Serializable{
 			if(objects[i] != null)
 			objects[i].draw(g2d);
 		}
+		double res[] = this.realtransform(massX, massY);
+		g2d.fillRect((int)res[0], (int)res[1], 10, 10);
 	}
 	
 	public byte registerShipJect(ShipJect obj) {

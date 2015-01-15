@@ -84,8 +84,8 @@ public class Engine extends ShipJect implements Serializable {
 	@Override 
 	public void tick() {
 		double res[] = ship.detransform(this.thrust*this.thisWayThrust()/ship.mass, 0);
-		ship.velX += res[0];
-		ship.velY += res[1];
+		ship.velocity.x += res[0];
+		ship.velocity.y += res[1];
 		if(ship.world.isRemote){
 			if(this.thisWayThrust() == 0&&sound.clip.isActive()){
 				sound.stop();

@@ -5,15 +5,14 @@ import java.awt.Graphics2D;
 import java.nio.ByteBuffer;
 
 public class Projectile extends SpaceJect {
-	public double velX = 1;
-	public double velY = 1;
+	public Pos velocity = new Pos(30,-10);
 	public double targetX;
 	public double targetY;
 	
 	public Projectile(double x, double y, World world, byte id, double velX, double velY) {
 		super(x, y, world, id);
-		this.velX = velX;
-		this.velY = velY;
+		this.velocity.x = velX;
+		this.velocity.y = velY;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -27,8 +26,7 @@ public class Projectile extends SpaceJect {
 	@Override
 	public void tick() {
 		//MOVE
-		pos.x += velX;
-		pos.y += velY;
+		pos.addOn(velocity);
 		
 		//COLLISION CHECK (SERVER ONLY)
 		if(!world.isRemote) {
@@ -48,6 +46,7 @@ public class Projectile extends SpaceJect {
 									dead = true;
 									//STEP 2 - DO DAMAGE
 									ServerData.world.ships[i].damageHull(x, y);
+									ServerData.world.ships[i].physReact(pos, velocity);
 									//y = (byte) 255;
 									//x = (byte) 255;
 									//STEP 3 - MAKE PARTICLES!

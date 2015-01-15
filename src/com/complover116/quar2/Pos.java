@@ -46,11 +46,19 @@ public class Pos implements Serializable {
 		double res = Math.sqrt(deltaX*deltaX+deltaY*deltaY);
 		return res;
 	}
+	public double length() {
+		double res = Math.sqrt(x*x+y*y);
+		return res;
+	}
 	public Pos sub(Pos pos2) {
 		return new Pos(this.x - pos2.x,this.y - pos2.y);
 	}
 	public Pos add(Pos pos2) {
 		return new Pos(this.x + pos2.x,this.y + pos2.y);
+	}
+	public void addOn(Pos pos2) {
+		this.x += pos2.x;
+		this.y += pos2.y;
 	}
 	public Pos add2(Pos pos2) {
 		return new Pos(this.x + pos2.y,this.y + pos2.x);
@@ -58,9 +66,21 @@ public class Pos implements Serializable {
 	public Pos mul(double i ) {
 		return new Pos(this.x*i,this.y*i);
 	}
+	public void mulOn(double i ) {
+		this.x*=i;
+		this.y*=i;
+	}
 	public Pos normal() {
-		double newX = Math.cos(Math.atan2(this.x, this.y));
-		double newY = Math.sin(Math.atan2(this.x, this.y));
+		double newX = Math.cos(Math.toRadians(Math.atan2(this.x, this.y)));
+		double newY = Math.sin(Math.toRadians(Math.atan2(this.x, this.y)));
+		return new Pos(newX, newY);
+	}
+	public double direction() {
+		return(Math.atan2(this.x, this.y));
+	}
+	public Pos rotate(double deg) {
+		double newX = Math.cos(Math.toRadians(Math.atan2(this.x, this.y)+deg));
+		double newY = Math.sin(Math.toRadians(Math.atan2(this.x, this.y)+deg));
 		return new Pos(newX, newY);
 	}
 }
