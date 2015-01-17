@@ -21,7 +21,10 @@ public class Particle extends ClientSideEnt {
 	@Override
 	public void draw(Graphics2D g2d) {
 		g2d.setColor(color);
+		if(lifetime>0)
 		g2d.fillRect((int)pos.x-6, (int)pos.y-6, 12, 12);
+		else 
+			g2d.fillRect((int)pos.x-6-lifetime, (int)pos.y-6 - lifetime, 12 + lifetime, 12 + lifetime);
 	}
 
 	@Override
@@ -30,7 +33,7 @@ public class Particle extends ClientSideEnt {
 		pos.x += velX;
 		pos.y += velY;
 		lifetime --;
-		if(lifetime < 0) this.dead = true;
+		if(lifetime < -6) this.dead = true;
 	}
 
 	@Override
