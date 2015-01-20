@@ -98,6 +98,11 @@ public class ServerFunctions {
 			b.putDouble(obj.pos.y);
 			b.putDouble(obj.rot);
 			b.put(((Engine)obj).direction);
+		}else if(obj.getClass() == WeaponsPanel.class){
+			out[2] = 3;
+			b.putDouble(obj.pos.x);
+			b.putDouble(obj.pos.y);
+			b.putDouble(obj.rot);
 		}
 		else {
 			System.err.println("ERROR: Undefined ShipJect type "+obj.getClass()+"! (This is bad, register this type RIGHT NOW!)");

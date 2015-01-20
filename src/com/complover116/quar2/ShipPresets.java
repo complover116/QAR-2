@@ -54,6 +54,9 @@ public class ShipPresets {
 		sh.hull[18][13] = new Hull(3);
 		sh.hull[19][13] = new Hull(3);
 		sh.hull[20][13] = new Hull(3);
+		sh.hull[21][13] = new Hull(3);
+		sh.hull[22][13] = new Hull(3);
+		sh.hull[23][13] = new Hull(3);
 		
 		sh.hull[0][1] = new Hull(3);
 		sh.hull[0][2] = new Hull(3);
@@ -68,14 +71,17 @@ public class ShipPresets {
 		sh.hull[0][11] = new Hull(3);
 		sh.hull[0][12] = new Hull(3);
 		
-		sh.hull[20][13] = new Hull(3);
-		sh.hull[21][12] = new Hull(3);
-		sh.hull[22][11] = new Hull(3);
-		sh.hull[23][10] = new Hull(3);
-		sh.hull[24][9] = new Hull(3);
-		sh.hull[25][8] = new Hull(3);
-		sh.hull[26][7] = new Hull(3);
+		sh.hull[24][13] = new Hull(3);
+		sh.hull[25][12] = new Hull(3);
+		sh.hull[26][11] = new Hull(3);
+		sh.hull[27][10] = new Hull(3);
+		sh.hull[27][9] = new Hull(3);
+		sh.hull[27][8] = new Hull(3);
+		sh.hull[27][7] = new Hull(3);
 		sh.hull[27][6] = new Hull(3);
+		sh.hull[26][6] = new Hull(3);
+		sh.hull[25][6] = new Hull(3);
+		sh.hull[24][6] = new Hull(3);
 		sh.hull[28][5] = new Hull(3);
 		sh.hull[29][4] = new Hull(3);
 		sh.hull[30][3] = new Hull(3);
@@ -84,6 +90,7 @@ public class ShipPresets {
 		sh.hull[30][0] = new Hull(3);
 		sh.calcMass();
 		sh.registerShipJect(new EnginesPanel(sh, 896,64,0));
+		sh.registerShipJect(new WeaponsPanel(sh, 832,256,0));
 		sh.registerShipJect(new Engine(sh, 928,64,0, (byte) 2));
 		sh.registerShipJect(new Engine(sh, -64,64,0, (byte) 1));
 		sh.registerShipJect(new Engine(sh, -64,384,0, (byte) 1));

@@ -68,6 +68,10 @@ public class ClientFunctions {
 			obj = new Engine(ClientData.world.ships[in[1]], b.getDouble(), b.getDouble(), b.getDouble(), b.get());
 			System.out.println("Received an Engine");
 		break;
+		case 3:
+			obj = new WeaponsPanel(ClientData.world.ships[in[1]], b.getDouble(), b.getDouble(), b.getDouble());
+			System.out.println("Received an WeaponsPanel");
+		break;
 		default:
 			System.err.println("ERROR: Incorrect ShipJect id "+in[2]+"! (This is bad, probably means server's and client's versions differ)");
 		return;
