@@ -16,6 +16,7 @@ public class World implements Serializable {
 		for(byte i = 0; i < Config.maxObjects; i ++) {
 			if(objects[i] == null) {
 				objects[i] = obj;
+				obj.world = this;
 				obj.id = i;
 				return;
 			}

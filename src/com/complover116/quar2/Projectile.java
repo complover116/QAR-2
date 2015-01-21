@@ -15,6 +15,12 @@ public class Projectile extends SpaceJect {
 		this.velocity.y = velY;
 		// TODO Auto-generated constructor stub
 	}
+	public Projectile(double x, double y, double velX, double velY) {
+		super(x, y);
+		this.velocity.x = velX;
+		this.velocity.y = velY;
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public void draw(Graphics2D g2d) {

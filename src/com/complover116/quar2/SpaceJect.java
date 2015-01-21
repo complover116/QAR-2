@@ -21,6 +21,10 @@ public abstract class SpaceJect {
 		pos.y = y;
 		this.world = world2;
 	}
+	public SpaceJect(double x, double y) {
+		pos.x = x;
+		pos.y = y;
+	}
 	public void downDate(ByteBuffer b){
 		b.putDouble(pos.x);
 		b.putDouble(pos.y);

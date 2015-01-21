@@ -70,6 +70,11 @@ public class Pos implements Serializable {
 		this.x*=i;
 		this.y*=i;
 	}
+	public static Pos normalFromDeg(double deg) {
+		double newX = Math.cos(Math.toRadians(deg));
+		double newY = Math.sin(Math.toRadians(deg));
+		return new Pos(newX, newY);
+	}
 	public Pos normal() {
 		double newX = Math.cos(Math.toRadians(Math.atan2(this.x, this.y)));
 		double newY = Math.sin(Math.toRadians(Math.atan2(this.x, this.y)));
