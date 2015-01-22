@@ -15,9 +15,11 @@ public class MessageDispatchThread implements Runnable {
 			if(ServerThread.outgoing.size() > 100) {
 				System.err.println("WARNING:MDT Buffer has "+ServerThread.outgoing.size()+" packets to send!");
 			}
+			synchronized(ServerThread.outgoing){
 			while(ServerThread.outgoing.size() > 0) {
 				ServerThread.sendBytesOld(ServerThread.outgoing.get(0));
 				ServerThread.outgoing.remove(0);
+			}
 			}
 		}
 	}

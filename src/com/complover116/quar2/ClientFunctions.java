@@ -8,8 +8,8 @@ public class ClientFunctions {
 
 	public static void receiveShipData(byte[] in) {
 		if (ClientData.world.ships[in[1]] == null) {
-			System.out.println("CLIENT: CREATING SHIP, ID:"+in[1]);
-			ClientData.world.ships[in[1]] = new Ship(0,0,0, ClientData.world, in[1]);
+			System.out.println("CLIENT: REQUESTING DATA FOR SHIP, ID:"+in[1]);
+			
 			//REQUEST SHIP STRUCTURE
 			byte out[] = new byte[64];
 			out[0] = 10;
@@ -22,7 +22,7 @@ public class ClientFunctions {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}else
 		ClientData.world.ships[in[1]].updatePos(ByteBuffer.wrap(in, 2, 62));
 	}
 	public static void receivePlayerData(byte[] in) {
@@ -51,6 +51,10 @@ public class ClientFunctions {
 		ClientData.world.players[in[1]].color = ByteBuffer.wrap(in, 2, 62).getInt();
 	}
 	public static void receiveShip(byte[] in) {
+		if (ClientData.world.ships[in[1]] == null) {
+			System.out.println("CLIENT: CREATING SHIP, ID:"+in[1]);
+		ClientData.world.ships[in[1]] = new Ship(0,0,0, ClientData.world, in[1]);
+		}
 		byte hullInfo[] = new byte[60];
 		ByteBuffer.wrap(in,4,60).get(hullInfo);
 		ClientData.world.ships[in[1]].hull[in[2]][in[3]] = new Hull(hullInfo);
@@ -81,6 +85,10 @@ public class ClientFunctions {
 			return;
 		}
 		ClientData.world.ships[in[1]].registerShipJect(obj, in[3]);
+	}
+	public static void receiveShipJectTick(byte[] in) {
+		ByteBuffer b = ByteBuffer.wrap(in, 3, 60);
+		ClientData.world.ships[in[1]].objects[in[2]].tickDataUp(b);
 	}
 	public static void receiveSpaceJectData(byte[] in) {
 		if (ClientData.world.objects[in[1]] == null) {
@@ -174,8 +182,13 @@ public class ClientFunctions {
 			soundName = "/sound/effects/explosions/hullboom_1.wav";
 		break;
 		case 2:
+			soundName = "/sound/effects/weapons/basic/fire_1.wav";
 		break;
 		case 3:
+			soundName = "/sound/effects/weapons/basic/fire_2.wav";
+		break;
+		case 4:
+			soundName = "/sound/effects/weapons/basic/fire_3.wav";
 		break;
 		default:
 			System.err.println("WARNING: Unregistered soundID "+sound);

@@ -120,6 +120,9 @@ public class ClientThread implements Runnable {
 				case 11:
 					ClientFunctions.receiveShipJect(in);
 				break;
+				case -11:
+					ClientFunctions.receiveShipJectTick(in);
+				break;
 				case -25:
 					ClientFunctions.playSound(in);
 				break;

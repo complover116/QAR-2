@@ -19,6 +19,15 @@ public abstract class ShipJect implements Serializable {
 		this.pos.y = y;
 		this.rot = rot;
 	}
+	/**
+	 * Return true and override tickData[Down/Up](ByteBuffer b) to send data to clients every tick
+	 * @return whether data should be sent to clients this tick
+	 */
+	public boolean shouldSendTickData() {
+		return false;
+	}
+	public void tickDataDown(ByteBuffer b) {}
+	public void tickDataUp(ByteBuffer b) {}
 	public byte[] downDate() {
 		byte[] b = new byte[60];
 		ByteBuffer bb = 

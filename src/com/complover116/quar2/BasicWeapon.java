@@ -20,9 +20,10 @@ public class BasicWeapon extends Weapon {
 			cooldown = 50;
 			//TODO - ANIMATIONS
 			//BULLET FIRE
-			Pos pos = attachedTo.getMountPos().add(Pos.normalFromDeg(rot).mul(60));
-			Pos vel = Pos.normalFromDeg(rot).mul(6).add(attachedTo.ship.velocity);
+			Pos pos = attachedTo.getMountPos().add(Pos.normalFromDeg(rot+attachedTo.ship.rot).mul(60));
+			Pos vel = Pos.normalFromDeg(rot+attachedTo.ship.rot).mul(20).add(attachedTo.ship.velocity);
 			attachedTo.ship.world.regObject(new Projectile(pos.x,pos.y, vel.x,vel.y));
+			ServerSoundHandler.playPositionedSound("/sound/effects/weapons/basic/fire_"+(int)(Math.random()*3 + 1)+".wav", pos.x, pos.y);
 		}
 	}
 

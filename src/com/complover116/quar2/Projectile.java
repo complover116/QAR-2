@@ -8,7 +8,7 @@ public class Projectile extends SpaceJect {
 	public Pos velocity = new Pos(30,-10);
 	public double targetX;
 	public double targetY;
-	
+	public int lifetime;
 	public Projectile(double x, double y, World world, byte id, double velX, double velY) {
 		super(x, y, world, id);
 		this.velocity.x = velX;
@@ -25,17 +25,25 @@ public class Projectile extends SpaceJect {
 	@Override
 	public void draw(Graphics2D g2d) {
 		g2d.setColor(new Color(255, (int)(Math.random()*255), 0));
-		g2d.fillRect((int)pos.x-12, (int)pos.y-12, 24, 24);
-		g2d.drawRect((int)targetX, (int)targetY, 5, 5);
+		g2d.fillRect((int)pos.x-8, (int)pos.y-8, 16, 16);
+		//g2d.drawRect((int)targetX, (int)targetY, 5, 5);
 	}
 
 	@Override
 	public void tick() {
+		
 		//MOVE
 		pos.addOn(velocity);
 		
+		
 		//COLLISION CHECK (SERVER ONLY)
 		if(!world.isRemote) {
+			//MAKE PARTICLES
+			ServerFunctions.sendClientSideObjectInfo(new Particle(this.pos.x, this.pos.y, ServerData.world, new Color(255,155,0), (byte) 1));
+			this.lifetime++;
+			if(this.lifetime>500) {
+				this.dead = true;
+			}
 			for(int i = 0; i < ServerData.world.ships.length; i ++)
 				if(ServerData.world.ships[i] != null) {
 					for(byte x = 0; x < 127; x++)
@@ -46,7 +54,7 @@ public class Projectile extends SpaceJect {
 								double[] res = ServerData.world.ships[i].realtransform(x*32+16, y*32+16);
 								targetX = res[0];
 								targetY = res[1];
-								if(pos.distance(new Pos(res[0],res[1]))< 16) {
+								if(pos.distance(new Pos(res[0],res[1]))< 32) {
 									//HERE COMES THE HARD PART:
 									//STEP 1 - REMOVE SELF
 									dead = true;

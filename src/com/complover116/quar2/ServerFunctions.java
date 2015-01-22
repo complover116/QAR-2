@@ -12,7 +12,6 @@ public class ServerFunctions {
 		ship.downDatePos(data);
 		ServerThread.sendBytes(out);
 	}
-
 	public static void sendPlayerPos(Player player, int i) {
 		byte out[] = new byte[64];
 		out[0] = 2;
@@ -78,6 +77,16 @@ public class ServerFunctions {
 		}catch (NullPointerException e) {
 			data.put((byte) -255);
 		}
+		ServerThread.sendBytes(out);
+	}
+	public static void sendShipJectTick(ShipJect obj) {
+		if(!obj.shouldSendTickData()) return;
+		byte out[] = new byte[64];
+		out[0] = -11;
+		out[1] = obj.ship.id;
+		out[2] = obj.id;
+		ByteBuffer b = ByteBuffer.wrap(out, 3,61);
+		obj.tickDataDown(b);
 		ServerThread.sendBytes(out);
 	}
 	public static void sendShipJect(ShipJect obj) {

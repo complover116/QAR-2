@@ -104,6 +104,11 @@ public class Ship implements Serializable{
 		data.putDouble(velocity.y);
 		data.putDouble(velRot);
 		data.putDouble(thrustX);
+		for(int i = 0; i < 127; i++){
+			if(this.objects[i] != null) {
+				ServerFunctions.sendShipJectTick(objects[i]);
+			}
+		}
 	}
 	public void calcMass() {
 		mass = 0;

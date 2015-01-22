@@ -147,6 +147,8 @@ public class ServerThread implements Runnable {
 		}
 	} 
 	public static void sendBytes(byte[] out) {
-		outgoing.add(out);
+		synchronized(ServerThread.outgoing){
+			outgoing.add(out);
+		}
 	}
 }

@@ -46,10 +46,11 @@ public class Loader {
 			ServerData.world.ships[5] = new Ship(400,500,0,ServerData.world, (byte) 5);
 			//ServerData.world.ships[5].velX = 0;
 			ServerData.world.ships[5].velRot = 0;
-			ServerData.world.ships[0] = new Ship(800,1000,0,ServerData.world, (byte) 0);
+			ServerData.world.ships[6] = new Ship(700,1000,0,ServerData.world, (byte) 6);
 			//ServerData.world.ships[0].velX = 0;
-			ServerData.world.ships[0].velRot = 0;
+			ServerData.world.ships[6].velRot = 0;
 			ShipPresets.loadDefault(ServerData.world.ships[5]);
+			ShipPresets.loadDefault(ServerData.world.ships[6]);
 			SoundHandler.playSound("/sound/effects/blip1.wav");
 			new Thread(new TickerThread(), "Ticker Thread").start();
 			Config.address = "localhost";

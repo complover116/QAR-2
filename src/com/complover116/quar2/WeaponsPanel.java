@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 public class WeaponsPanel extends Panel implements Serializable {
 	public Weapon weapon = new BasicWeapon(this);
@@ -74,13 +75,25 @@ public class WeaponsPanel extends Panel implements Serializable {
 	
 	public void onUse(Player ply) {
 		super.onUse(ply);
-		//ply.hud = HUD.PILOTING;
+		ply.hud = HUD.PILOTING;
 	}
 	public void onExit(Player ply) {
 		super.onExit(ply);
-		//ply.hud = HUD.DEFAULT;
+		ply.hud = HUD.DEFAULT;
 	}
-
+	@Override
+	public boolean shouldSendTickData() {
+		if(this.weapon.shouldSendData()) return true;
+		return false;
+	}
+	@Override
+	public void tickDataDown(ByteBuffer b) {
+		this.weapon.downDate(b);
+	}
+	@Override
+	public void tickDataUp(ByteBuffer b) {
+		this.weapon.upDate(b);
+	}
 	public Pos getMountPos() {
 		double res[] = this.ship.realtransform(pos.x+64, pos.y-30);
 		return new Pos(res[0],res[1]);
