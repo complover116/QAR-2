@@ -85,5 +85,4 @@ public class WeaponsPanel extends Panel implements Serializable {
 		double res[] = this.ship.realtransform(pos.x+64, pos.y-30);
 		return new Pos(res[0],res[1]);
 	}
-	@
 }
