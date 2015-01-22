@@ -59,8 +59,8 @@ public class Projectile extends SpaceJect {
 									//STEP 1 - REMOVE SELF
 									dead = true;
 									//STEP 2 - DO DAMAGE
-									ServerData.world.ships[i].damageHull(x, y);
-									ServerData.world.ships[i].physReact(pos, velocity);
+									ServerData.world.ships[i].damageHull(x, y, (byte) 26);
+									ServerData.world.ships[i].physReact(pos, velocity, 0.1);
 									//y = (byte) 255;
 									//x = (byte) 255;
 									//STEP 3 - MAKE PARTICLES!

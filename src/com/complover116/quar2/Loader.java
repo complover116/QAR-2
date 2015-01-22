@@ -46,7 +46,7 @@ public class Loader {
 			ServerData.world.ships[5] = new Ship(400,500,0,ServerData.world, (byte) 5);
 			//ServerData.world.ships[5].velX = 0;
 			ServerData.world.ships[5].velRot = 0;
-			ServerData.world.ships[6] = new Ship(700,1000,0,ServerData.world, (byte) 6);
+			ServerData.world.ships[6] = new Ship(700,3000,0,ServerData.world, (byte) 6);
 			//ServerData.world.ships[0].velX = 0;
 			ServerData.world.ships[6].velRot = 0;
 			ShipPresets.loadDefault(ServerData.world.ships[5]);
@@ -65,7 +65,7 @@ public class Loader {
 			Config.server = InetAddress.getByName(Config.address);
 			new Thread(new ClientThread(), "Client Thread").start();
 			while(!initialized) {
-				Render.loadspeed+=0.25;
+				Render.loadspeed+=0.15;
 				try {
 					Thread.sleep(10);
 				} catch (InterruptedException e) {

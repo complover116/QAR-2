@@ -26,7 +26,7 @@ public class ServerFunctions {
 	}
 
 	public static void sendPlayerInfo(Player player, int i) {
-		byte out[] = new byte[64];
+		byte out[] = new byte[65];
 		out[0] = 3;
 		out[1] = (byte) i;
 		ByteBuffer data = ByteBuffer.wrap(out, 2, 62);
@@ -49,7 +49,7 @@ public class ServerFunctions {
 		for (int i = 0; i < 256; i++)
 			for (int j = 0; j < 256; j++) {
 				if (sh.hull[i][j] != null) {
-						byte out[] = new byte[64];
+						byte out[] = new byte[65];
 						out[0] = 10;
 						out[1] = (byte) num;
 						out[2] = (byte) i;
@@ -66,7 +66,7 @@ public class ServerFunctions {
 		}
 	}
 	public static void sendHullBlockStatus(Ship sh, byte x, byte y) {
-		byte out[] = new byte[64];
+		byte out[] = new byte[65];
 		out[0] = -10;
 		out[1] = (byte) sh.id;
 		out[2] = (byte) x;
@@ -90,7 +90,7 @@ public class ServerFunctions {
 		ServerThread.sendBytes(out);
 	}
 	public static void sendShipJect(ShipJect obj) {
-		byte out[] = new byte[64];
+		byte out[] = new byte[65];
 		out[0] = 11;
 		out[1] = obj.ship.id;
 		out[3] = obj.id;

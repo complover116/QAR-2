@@ -3,6 +3,7 @@ package com.complover116.quar2;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
@@ -34,6 +35,7 @@ public class ClientThread implements Runnable {
 		
 	}
 	static DatagramSocket socket;
+	static Socket TCPSock;
 	public static int timeout = 0;
 	public static final int timeoutLow = 10;
 	public static final int timeoutHigh = 50;
@@ -73,6 +75,9 @@ public class ClientThread implements Runnable {
 				System.exit(0);
 			}
 			ClientData.controlledPlayer = in[2];
+			Render.loadStep = "Connecting with TCP...";
+			TCPSock = new Socket(Config.server, 1141);
+			new Thread(new ClientTCPConnection(), "Client TCP connection thread").start();;
 			Loader.initialized = true;
 			socket.setSoTimeout(0);
 		} catch(SocketTimeoutException e) {
@@ -92,46 +97,7 @@ public class ClientThread implements Runnable {
 			try {
 				socket.receive(incoming);
 				timeout = 0;
-				switch(in[0]) {
-				case 1:
-					ClientFunctions.receiveShipData(in);
-				break;
-				case 2:
-					ClientFunctions.receivePlayerData(in);
-				break;
-				case 3:
-					ClientFunctions.receivePlayerInfo(in);
-				break;
-				case 4:
-					ClientFunctions.receiveSpaceJectData(in);
-				break;
-				case 5:
-					ClientFunctions.receiveSpaceJectInfo(in);
-				break;
-				case 6:
-					ClientFunctions.receiveCLIEInfo(in);
-				break;
-				case 10:
-					ClientFunctions.receiveShip(in);
-				break;
-				case -10:
-					ClientFunctions.receiveHull(in);
-				break;
-				case 11:
-					ClientFunctions.receiveShipJect(in);
-				break;
-				case -11:
-					ClientFunctions.receiveShipJectTick(in);
-				break;
-				case -25:
-					ClientFunctions.playSound(in);
-				break;
-				case -1:
-					System.out.println("SpaapS");
-					ClientData.world.players[in[1]] = new Player(ClientData.world, 0, 0);
-					ClientData.world.players[in[1]].color = in[2];
-				break;
-				}
+				reactToInput(in);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -150,6 +116,48 @@ public class ClientThread implements Runnable {
 		System.exit(0);
 	}
 		System.out.println("Client Networking Thread has stopped");
+	}
+	public static void reactToInput(byte in[]) {
+		switch(in[0]) {
+		case 1:
+			ClientFunctions.receiveShipData(in);
+		break;
+		case 2:
+			ClientFunctions.receivePlayerData(in);
+		break;
+		case 3:
+			ClientFunctions.receivePlayerInfo(in);
+		break;
+		case 4:
+			ClientFunctions.receiveSpaceJectData(in);
+		break;
+		case 5:
+			ClientFunctions.receiveSpaceJectInfo(in);
+		break;
+		case 6:
+			ClientFunctions.receiveCLIEInfo(in);
+		break;
+		case 10:
+			ClientFunctions.receiveShip(in);
+		break;
+		case -10:
+			ClientFunctions.receiveHull(in);
+		break;
+		case 11:
+			ClientFunctions.receiveShipJect(in);
+		break;
+		case -11:
+			ClientFunctions.receiveShipJectTick(in);
+		break;
+		case -25:
+			ClientFunctions.playSound(in);
+		break;
+		case -1:
+			System.out.println("SpaapS");
+			ClientData.world.players[in[1]] = new Player(ClientData.world, 0, 0);
+			ClientData.world.players[in[1]].color = in[2];
+		break;
+		}
 	}
 	public static void sendKey(int key, boolean state) {
 		byte out[] = new byte[64];

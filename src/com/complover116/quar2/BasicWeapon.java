@@ -17,7 +17,7 @@ public class BasicWeapon extends Weapon {
 		//SAFEGUARD - MUST ONLY BE RUN ON SERVER
 		if(attachedTo.ship.world.isRemote) return;
 		if(cooldown == 0){
-			cooldown = 50;
+			cooldown = 15;
 			//TODO - ANIMATIONS
 			//BULLET FIRE
 			Pos pos = attachedTo.getMountPos().add(Pos.normalFromDeg(rot+attachedTo.ship.rot).mul(60));

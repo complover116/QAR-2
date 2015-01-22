@@ -36,16 +36,16 @@ public class Ship implements Serializable{
 	
 	public void physReact(byte x, byte y, Pos velocity) {
 		double[] res = this.realtransform(x*32+16, y*32+16);
-		physReact(new Pos(res[0], res[1]), velocity);
+		physReact(new Pos(res[0], res[1]), velocity, 1);
 	}
-	public void physReact(Pos impactpos, Pos velocity) {
+	public void physReact(Pos impactpos, Pos velocity, double scale) {
 		//GET PUSHED AWAY
 		//double res[] = this.realtransform(massX, massY);
 		//Pos push = new Pos(res[0], res[1]).sub(impactpos);
 		//this.velocity.addOn(push.normal().mul(10));
 		Pos res = velocity.sub(this.velocity).mul(10/this.mass);
 		//res.mulOn(10);
-		this.velocity.addOn(res);
+		this.velocity.addOn(res.mul(scale));
 		Pos deltaV = velocity.sub(this.velocity);
 		//TURN
 		double O[] = this.realdetransform(massX,massY);
@@ -61,13 +61,15 @@ public class Ship implements Serializable{
 		//double velres[] = this.realdetransform(deltaV.x,deltaV.y);
 		
 		Pos velToTemp = impos.rotate(impos.sub(new Pos(O[0],O[1])).direction()+90);
-		this.velRot += wDeg*velToTemp.normal().y*1000;
+		this.velRot += wDeg*velToTemp.normal().y*1000*scale;
 		//System.out.println(wDeg+":"+velToTemp.normal().y);
 	}
 	/***
 	 * THIS FUNCTION IS SERVER ONLY!!!
 	 */
-	public void damageHull(byte x, byte y) {
+	public void damageHull(byte x, byte y, byte damage) {
+		if(this.hull[x][y] == null) return;
+		if(this.hull[x][y].health <= damage){
 		//STEP 1 - DO THE DAMAGE
 		this.hull[x][y] = null;
 		//STEP 2 - SEND HULL UPDATES
@@ -78,8 +80,55 @@ public class Ship implements Serializable{
 			ServerFunctions.sendClientSideObjectInfo(new Particle(res[0], res[1], ServerData.world, new Color(155,155,155)));
 		}
 		ServerSoundHandler.playPositionedSound("/sound/effects/explosions/hullboom_1.wav", res[0], res[1]);
+		} else {
+			this.hull[x][y].health -= damage;
+			ServerFunctions.sendHullBlockStatus(this, x, y);
+			double[] res = this.realtransform(x*32+16, y*32+16);
+			for(int z = 0; z < (damage/10) + 1; z ++) {
+				ServerFunctions.sendClientSideObjectInfo(new Particle(res[0], res[1], ServerData.world, new Color(155,155,155)));
+			}
+		}
 	}
 	public void tick() {
+		if(!world.isRemote&&Config.collisionsEnabled) {
+			for(byte i = 0; i < ServerData.world.ships.length; i ++) {
+				
+				Ship sh = ServerData.world.ships[i];
+				if(sh != null&&sh.id!=this.id&&new Pos(sh.x, sh.y).distance(new Pos(this.x,this.y)) < 1000){
+					for(byte x0 = 0; x0 < 127; x0++)
+						for(byte y0 = 0; y0 < 127; y0++){
+							if(this
+									.hull[x0][y0]!= null) {
+								double[] res0 = this.realtransform(x0*32+16, y0*32+16);
+					for(byte x = 0; x < 127; x++)
+						for(byte y = 0; y < 127; y++){
+							if(i < 0)System.out.println(i+", "+x+":"+y);
+							if(ServerData.world.ships[i]
+									.hull[x][y]!= null) {
+								double[] res = ServerData.world.ships[i].realtransform(x*32+16, y*32+16);
+								if(new Pos(res0[0],res0[1]).distance(new Pos(res[0],res[1]))< 32) {
+									//HERE COMES THE HARD PART:
+									//STEP 1 - REMOVE SELF
+									//dead = true;
+									//STEP 2 - DO DAMAGE
+									ServerData.world.ships[i].damageHull(x, y, (byte) 10);
+									ServerData.world.ships[i].physReact(new Pos(res0[0],res0[1]), velocity, 3);
+									this.damageHull(x0, y0, (byte) 10);
+									this.physReact(new Pos(res[0],res[1]), sh.velocity, 3);
+									//y = (byte) 255;
+									//x = (byte) 255;
+									//STEP 3 - MAKE PARTICLES!
+									for(int z = 0; z < 5; z ++) {
+										ServerFunctions.sendClientSideObjectInfo(new Particle(res0[0], res0[1], ServerData.world, new Color(255,155,0)));
+									}
+								}
+							}
+						}
+							}
+						}
+				}
+				}
+			}
 		velRot *= 0.995;
 		this.x += velocity.x;
 		this.y += velocity.y;
@@ -87,6 +136,8 @@ public class Ship implements Serializable{
 		this.rot += velRot;
 		for(int i =0 ;i <this.objects.length; i ++) if(objects[i] != null) this.objects[i].tick();
 	}
+	
+
 	public void updatePos(ByteBuffer data) {
 		this.x = data.getDouble();
 		this.y = data.getDouble();
@@ -193,6 +244,16 @@ public class Ship implements Serializable{
 					AffineTransform trans = AffineTransform.getTranslateInstance(transformed[0]+x, transformed[1]+y);
 					trans.concatenate(AffineTransform.getRotateInstance(Math.toRadians(rot)));
 					g2d.drawImage(ResourceContainer.images.get(hull[i][j].getImagePath()), trans,null);
+					String img = "";
+					if(hull[i][j].health > 75)
+						img = "";
+					else if (hull[i][j].health > 50)
+						img =  "/img/hull/damage_1.png";
+					else if(hull[i][j].health > 25)
+						img =  "/img/hull/damage_2.png";
+					else 
+						img =  "/img/hull/damage_3.png";
+					g2d.drawImage(ResourceContainer.images.get(img), trans,null);
 				}
 			}
 		for(int i = 0; i < objects.length; i ++) {

@@ -3,7 +3,10 @@ package com.complover116.quar2;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -11,13 +14,19 @@ import javax.swing.JOptionPane;
 public class ServerThread implements Runnable {
 	public static ArrayList<RemoteClient> clients = new ArrayList<RemoteClient>();
 	public static DatagramSocket socket;
+	public static ServerSocket serverSocket;
 	public static ArrayList<byte[]> outgoing = new ArrayList<byte[]>();
 	public ServerThread() {
 		try {
 			socket = new DatagramSocket(1141);
+			serverSocket = new ServerSocket(1141);
 		} catch (SocketException e) {
 			SoundHandler.playSound("/sound/effects/error1.wav");
 			JOptionPane.showMessageDialog(null, "Server socket could not bind!\nMake sure that port 1141 is free!", "Connection error", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
+		} catch (IOException e) {
+			SoundHandler.playSound("/sound/effects/error1.wav");
+			JOptionPane.showMessageDialog(null, "Severside TCP setup failed!", "Connection error", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
 	}
@@ -54,17 +63,13 @@ public class ServerThread implements Runnable {
 					byte out[] = new byte[64];
 					out[0] = 124;
 					if(success){
-					ServerData.world.players[i] = new Player(ServerData.world, 256,128);
-					ServerData.world.players[i].shipid = 5;
-					ServerData.world.players[i].pos.x = 128;
-					ServerData.world.players[i].color = in[1];
+					
 					byte broadcast[] = new byte[64];
 					broadcast[0] = -1;
 					broadcast[1] = (byte) i;
 					broadcast[2] = in[1];
 					sendBytes(broadcast);
-					clients.add(new RemoteClient(incoming.getAddress(),
-							incoming.getPort(), ServerData.world.players[i]));
+					
 					out[1] = 1;
 					out[2] = (byte) i;
 					} else{
@@ -74,6 +79,22 @@ public class ServerThread implements Runnable {
 					
 					DatagramPacket response = new DatagramPacket(out, out.length, incoming.getSocketAddress());
 					socket.send(response);
+					
+					
+					System.out.println("Waiting for TCP connection...");
+					try{
+					serverSocket.setSoTimeout(2000);
+					Socket sock = serverSocket.accept();
+					sock.getOutputStream().write(-126);
+					ServerData.world.players[i] = new Player(ServerData.world, 256,128);
+					ServerData.world.players[i].shipid = 5;
+					ServerData.world.players[i].pos.x = 128;
+					ServerData.world.players[i].color = in[1];
+					clients.add(new RemoteClient(incoming.getAddress(),
+							incoming.getPort(), ServerData.world.players[i], sock));
+					} catch (SocketTimeoutException e) {
+						System.err.println("TCP connection failed... :(");
+					}
 					//SEND THE WHOLE WORLD
 					//We won't actually do that, this is stupid to do over UDP
 					/*
