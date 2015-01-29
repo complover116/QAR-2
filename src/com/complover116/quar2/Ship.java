@@ -84,6 +84,7 @@ public class Ship implements Serializable{
 			this.hull[x][y].health -= damage;
 			ServerFunctions.sendHullBlockStatus(this, x, y);
 			double[] res = this.realtransform(x*32+16, y*32+16);
+			ServerSoundHandler.playPositionedSound("/sound/effects/explosions/hullhit_"+((int)(Math.random()*2)+1)+".wav", res[0], res[1]);
 			for(int z = 0; z < (damage/10) + 1; z ++) {
 				ServerFunctions.sendClientSideObjectInfo(new Particle(res[0], res[1], ServerData.world, new Color(155,155,155)));
 			}

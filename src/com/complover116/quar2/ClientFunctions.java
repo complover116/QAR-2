@@ -190,18 +190,25 @@ public class ClientFunctions {
 		case 4:
 			soundName = "/sound/effects/weapons/basic/fire_3.wav";
 		break;
+		case 5:
+			soundName = "/sound/effects/explosions/hullhit_1.wav";
+		break;
+		case 6:
+			soundName = "/sound/effects/explosions/hullhit_2.wav";
+		break;
 		default:
 			System.err.println("WARNING: Unregistered soundID "+sound);
 		}
 if(!surface) {
-	System.out.println("Playing positioned sound:"+soundName);
+	
 	float gain = 0;
 	//float pan = 0;
 	double x = b.getDouble();
 	double y = b.getDouble();
 	double res[] = ClientData.world.ships[ClientData.world.players[ClientData.controlledPlayer].shipid].transform(ClientData.world.players[ClientData.controlledPlayer].pos.x, ClientData.world.players[ClientData.controlledPlayer].pos.y);
-	gain = 0 - ((float) new Pos(x,y).distance(new Pos(res[0], res[1])));
+	gain = 0 - ((float) new Pos(x,y).distance(new Pos(res[0], res[1])))/1000;
 	SoundHandler.playModSound(soundName, 1f,gain);
+	System.out.println("Playing positioned sound:"+soundName+" "+gain);
 		} else {
 			System.out.println("Playing surface sound:"+soundName);
 			SoundHandler.playSound(soundName);

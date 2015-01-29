@@ -85,7 +85,7 @@ public class ServerThread implements Runnable {
 					try{
 					serverSocket.setSoTimeout(2000);
 					Socket sock = serverSocket.accept();
-					sock.getOutputStream().write(-126);
+					//sock.getOutputStream().write(-126);
 					ServerData.world.players[i] = new Player(ServerData.world, 256,128);
 					ServerData.world.players[i].shipid = 5;
 					ServerData.world.players[i].pos.x = 128;

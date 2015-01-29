@@ -31,14 +31,16 @@ public class SoundHandler {
 	public static boolean playModSound(String name, float PAN, float GAIN) {
 		if(ResourceContainer.sounds.get(name)!= null){
 			try {
+				if(GAIN>-80){
 				Clip clip = AudioSystem.getClip();
 				clip.open(ResourceContainer.format, ResourceContainer.sounds.get(name), 0, ResourceContainer.sounds.get(name).length);
 				clip.start();
-				if(clip.isControlSupported(FloatControl.Type.VOLUME))
+				if(clip.isControlSupported(FloatControl.Type.MASTER_GAIN))
 		        {
-		            FloatControl pan = (FloatControl) clip.getControl(FloatControl.Type.VOLUME);
+		            FloatControl pan = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		            pan.setValue(GAIN);
 		        }
+				}
 			} catch (LineUnavailableException e) {
 				if(!warned){
 				JOptionPane.showMessageDialog(GUI.mainFrame, "AudioSystem Error!\nSounds may fail to play!", "Error", JOptionPane.ERROR_MESSAGE);

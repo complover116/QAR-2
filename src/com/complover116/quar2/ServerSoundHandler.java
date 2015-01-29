@@ -25,6 +25,8 @@ public class ServerSoundHandler {
 		case "/sound/effects/weapons/basic/fire_1.wav": soundID = 2; break;
 		case "/sound/effects/weapons/basic/fire_2.wav": soundID = 3; break;
 		case "/sound/effects/weapons/basic/fire_3.wav": soundID = 4; break;
+		case "/sound/effects/explosions/hullhit_1.wav": soundID = 5; break;
+		case "/sound/effects/explosions/hullhit_2.wav": soundID = 6; break;
 		default:
 			System.err.println("WARNING: Unregistered sound "+name);
 		}
