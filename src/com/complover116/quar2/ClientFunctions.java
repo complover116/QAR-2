@@ -137,6 +137,7 @@ public class ClientFunctions {
 	//THAt's A DUMB NAME
 	//BUT I'LL LIVE
 	public static void receiveCLIEInfo(byte[] in) {
+		if(Config.clientTickerMode == ClientTicker.MODE_NONE) return;
 		//YOU SET MY SOUL ALIGHT
 		ClientSideEnt obj = null;
 		//STEP 1 - GET THE TYPE

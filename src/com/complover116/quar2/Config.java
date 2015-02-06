@@ -9,6 +9,7 @@ public class Config {
 	public static final int maxShips = 50;
 	public static final int maxPlayers = 2;
 	public static final int tickdelay = 20;
+	public static byte clientTickerMode = ClientTicker.MODE_NORMAL;
 	public static final int maxObjects = 50;
 	public static boolean collisionsEnabled = true;
 }

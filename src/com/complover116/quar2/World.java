@@ -24,12 +24,14 @@ public class World implements Serializable {
 		System.err.println("UH-OH! Out of object slots! WE'RE GOING TO CRASH!!!");
 	}
 	public void tick() {
+		if(!this.isRemote||Config.clientTickerMode > ClientTicker.MODE_MINIMAL)
 		for(int i = 0; i < ships.length; i ++) {
 			if(ships[i] != null)ships[i].tick();
 		}
 		for(int i = 0; i < players.length; i ++) {
 			if(players[i] != null)players[i].tick();
 		}
+		if(!this.isRemote||Config.clientTickerMode > ClientTicker.MODE_MINIMAL)
 		for(int i = 0; i < objects.length; i ++) {
 			if(objects[i] != null){
 				if(objects[i].dead){
