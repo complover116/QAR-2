@@ -68,6 +68,8 @@ public class Ship implements Serializable{
 	 * THIS FUNCTION IS SERVER ONLY!!!
 	 */
 	public void damageHull(byte x, byte y, byte damage) {
+		//SAFETY FIRST
+		if(this.world.isRemote) {System.err.println("STOOPID PROGRAMMER! damageHull() is server only!"); return;}
 		if(this.hull[x][y] == null) return;
 		if(this.hull[x][y].health <= damage){
 		//STEP 1 - DO THE DAMAGE
