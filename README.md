@@ -1,6 +1,6 @@
 QAR-2
 =====
-//TODO - make an appropriate description
+This is NOT being developed anymore. Afrer I'm done with everything else, I might decide to bring the idea up again
 
 #####Sound licensing
 This game uses several sounds from freesound.org:
